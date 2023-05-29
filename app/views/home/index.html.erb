@@ -1,0 +1,42 @@
+<h1>Welcome to Albatross</h1>
+
+<div class="login-form">
+  <%= form_for(:user, url: session_path(:user)) do |f| %>
+    <div class="field">
+      <%= f.label :email %><br>
+      <%= f.email_field :email, autofocus: true %>
+    </div>
+
+    <div class="field">
+      <%= f.label :password %><br>
+      <%= f.password_field :password, autocomplete: "off" %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit "Log in" %>
+    </div>
+  <% end %>
+</div>
+
+<div class="registration-form">
+  <%= form_for(:user, url: registration_path(:user)) do |f| %>
+    <div class="field">
+      <%= f.label :email %><br>
+      <%= f.email_field :email, autofocus: true %>
+    </div>
+
+    <div class="field">
+      <%= f.label :password %><br>
+      <%= f.password_field :password, autocomplete: "off" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :password_confirmation %><br>
+      <%= f.password_field :password_confirmation, autocomplete: "off" %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit "Register" %>
+    </div>
+  <% end %>
+</div>
