@@ -1,0 +1,19 @@
+<h1>New Sponsor</h1>
+
+<%= form_with(model: [@academy, @sponsor], url: academy_sponsors_path(@academy)) do |form| %>
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_field :description %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit 'Create Sponsor' %>
+  </div>
+<% end %>
+
+<%= link_to 'Back', edit_academy_path(@academy) %>

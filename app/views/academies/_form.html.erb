@@ -1,0 +1,27 @@
+<%= form_with(model: @academy) do |form| %>
+  <% if @academy.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@academy.errors.count, "error") %> prohibited this academy from being saved:</h2>
+
+      <ul>
+        <% @academy.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :edition_number %>
+    <%= form.text_field :edition_number %>
+  </div>
+
+  <div class="field">
+    <%= form.label :package %>
+    <%= form.text_field :package %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

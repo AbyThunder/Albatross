@@ -1,0 +1,29 @@
+<h1>Edit Academy</h1>
+
+<%= render 'form' %>
+
+<!-- Existing Sponsors -->
+<h2>Existing Sponsors</h2>
+<%= render partial: 'sponsors/sponsor', collection: @academy.sponsors.uniq %>
+
+<!-- Add Existing Sponsor -->
+<h2>Add Existing Sponsor</h2>
+<%= form_with(model: @academy, url: academy_path(@academy), method: :patch) do |form| %>
+  <div class="field">
+    <%= form.label :sponsor_ids, 'Select Sponsors' %>
+    <br>
+    <%= form.collection_select :sponsor_ids, @existing_sponsors, :id, :name, {}, { multiple: true } %>
+  </div>
+  <div class="actions">
+    <%= form.submit 'Add Sponsors' %>
+  </div>
+<% end %>
+
+<!-- Create New Sponsor -->
+<h2>Create New Sponsor</h2>
+<%= link_to 'New Sponsor', new_academy_sponsor_path(@academy) %>
+<br>
+<br>
+
+<%= link_to 'Show', @academy %> |
+<%= link_to 'Back', academies_path %>

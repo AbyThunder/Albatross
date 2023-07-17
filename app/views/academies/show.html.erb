@@ -1,0 +1,37 @@
+<h1>Academy Details</h1>
+
+<p><strong>Edition Number:</strong> <%= @academy.edition_number %></p>
+<p><strong>Package:</strong> <%= @academy.package %></p>
+
+<br>
+
+<h2>Sponsors</h2>
+<% @sponsors.each do |sponsor| %>
+  <div>
+    <h3><%= sponsor.name %></h3>
+    <p><strong>Description:</strong> <%= sponsor.description %></p>
+  </div>
+<% end %>
+
+<br>
+
+
+<h2>Lessons</h2>
+
+<% @academy.lessons.order(date: :asc).each do |lesson| %>
+  <div>
+    <h3><%= lesson.date %></h3>
+    <p><strong>Place:</strong> <%= lesson.place %></p>
+    <p><strong>Description:</strong> <%= lesson.description %></p>
+    <p><strong>Freebie:</strong> <%= lesson.freebie %></p>
+  </div>
+<% end %>
+
+<br>
+
+<%= link_to 'Edit', edit_academy_path(@academy) %> |
+<%= link_to 'Back', academies_path %>
+
+<br>
+
+<%= link_to 'Create Lesson', new_academy_lesson_path(@academy) %>

@@ -5,4 +5,11 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root to: 'home#index'
+  resources :academies do
+    resources :lessons, only: [:new, :create]
+    resources :sponsors
+    member do
+      delete :destroy_academy
+    end
+  end
 end
