@@ -1,6 +1,8 @@
+<!-- app/views/academies/show.html.erb -->
 <h1>Academy Details</h1>
 
 <p><strong>Edition Number:</strong> <%= @academy.edition_number %></p>
+<p><strong>Season:</strong> <%= @academy.season %></p>
 <p><strong>Package:</strong> <%= @academy.package %></p>
 
 <br>
@@ -15,9 +17,7 @@
 
 <br>
 
-
 <h2>Lessons</h2>
-
 <% @academy.lessons.order(date: :asc).each do |lesson| %>
   <div>
     <h3><%= lesson.date %></h3>
@@ -26,6 +26,8 @@
     <p><strong>Freebie:</strong> <%= lesson.freebie %></p>
   </div>
 <% end %>
+
+<br>
 
 <br>
 

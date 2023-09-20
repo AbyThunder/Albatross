@@ -1,4 +1,7 @@
 class LessonsController < ApplicationController
+  before_action :authenticate_user!
+  load_and_authorize_resource
+
   def new
     @academy = Academy.find(params[:academy_id])
     @lesson = @academy.lessons.build

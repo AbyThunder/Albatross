@@ -1,0 +1,10 @@
+<h1>Assign Trainer</h1>
+<%= form_tag save_trainer_assignment_manager_path(@user), method: :post do %>
+  <h3>Select Lessons:</h3>
+  <% @lessons.each do |lesson| %>
+    <%= check_box_tag 'lesson_ids[]', lesson.id %>
+    <%= lesson.date %>
+  <% end %>
+  <br>
+  <%= submit_tag 'Save Trainer Assignment' %>
+<% end %>

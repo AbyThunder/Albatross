@@ -3,6 +3,7 @@
   <thead>
     <tr>
       <th>Edition Number</th>
+      <th>Season</th>
       <th>Package</th>
       <th>Sponsors</th>
       <th colspan="3"></th>
@@ -12,6 +13,7 @@
     <% @academies.each do |academy| %>
       <tr>
         <td><%= academy.edition_number %></td>
+        <td><%= academy.season %></td>
         <td><%= academy.package %></td>
         <td>
           <% if academy.sponsors.present? %>

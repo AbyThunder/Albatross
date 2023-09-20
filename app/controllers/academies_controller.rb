@@ -9,6 +9,7 @@ class AcademiesController < ApplicationController
     # Find a specific academy based on the ID parameter
     @academy = Academy.find(params[:id])
     @sponsors = @academy.sponsors.distinct
+    @lessons = @academy.lessons.includes(:trainers)
   end
 
   def new
@@ -53,7 +54,7 @@ class AcademiesController < ApplicationController
 
   def academy_params
     # Define the permitted parameters for the academy model
-    params.require(:academy).permit(:edition_number, :package, sponsor_ids: [])
+    params.require(:academy).permit(:edition_number, :package, :season, sponsor_ids: [])
   end
 
   def new_lesson

@@ -1,0 +1,13 @@
+<h1>Lesson Details</h1>
+<!-- ... other lesson details ... -->
+
+<h2>Trainers</h2>
+<% @lesson.trainers.each do |trainer| %>
+  <div>
+    <h3><%= trainer.name %></h3>
+    <p><strong>Description:</strong> <%= trainer.description %></p>
+  </div>
+<% end %>
+
+
+<%= link_to 'Add New Trainer', new_lesson_trainer_path(@lesson) %>
