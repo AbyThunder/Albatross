@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_31_165020) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_01_174701) do
   create_table "academies", force: :cascade do |t|
     t.integer "edition_number"
     t.string "package"
@@ -29,7 +29,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_31_165020) do
   create_table "candidates", force: :cascade do |t|
     t.integer "academy_id"
     t.string "name"
-    t.string "status"
+    t.integer "status", default: 0
     t.string "email"
     t.string "phone"
     t.datetime "created_at", null: false
