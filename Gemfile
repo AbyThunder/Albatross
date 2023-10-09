@@ -44,6 +44,7 @@ gem "bootsnap", require: false
 gem 'devise'
 gem 'pry'
 gem 'cancancan'
+gem 'fast_jsonapi'
 # Use Sass to process CSS
 # gem "sassc-rails"
 

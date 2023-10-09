@@ -1,25 +1,23 @@
-# app/models/ability.rb
 class Ability
   include CanCan::Ability
 
   def initialize(user)
     user ||= User.new # Guest user
 
-    if user.manager?
-      # Manager can perform all actions on all models
+    if user.admin?
+      can :manage, User
+    elsif user.manager?
       can :manage, :all
+      cannot :manage, User, role: :admin # Managers can't manage admins
     elsif user.trainer?
-      # Trainer can read and update lessons they are associated with
       can :read, Lesson, trainers: { id: user.id }
       can :update, Lesson, trainers: { id: user.id }
     elsif user.candidate?
-      # Candidate can read their own candidates and lessons
       can :read, Candidate, user_id: user.id
       can :read, Lesson, candidates: { user_id: user.id }
       can :read, Academy
       can :create, AcademyRequest
-    elsif user.player? # TBD
-      # Player can read their own player information and associated lessons
+    elsif user.player?
       can :read, Player, user_id: user.id
     end
   end

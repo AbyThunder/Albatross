@@ -73,8 +73,6 @@ class AcademiesController < ApplicationController
     end
   end
 
-  private
-
   def lesson_params
     params.require(:lesson).permit(:date, :place, :description, :freebie)
   end
