@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_14_091514) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_28_170325) do
   create_table "academies", force: :cascade do |t|
     t.integer "edition_number"
     t.string "package"
@@ -116,6 +116,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_14_091514) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["general_classification_id"], name: "index_general_rewards_on_general_classification_id"
+  end
+
+  create_table "homeblocks", force: :cascade do |t|
+    t.string "box_type"
+    t.string "title"
+    t.text "lower_text"
+    t.string "redirect_url"
+    t.string "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "league_sponsors", force: :cascade do |t|
