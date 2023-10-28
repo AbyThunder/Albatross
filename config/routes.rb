@@ -22,6 +22,8 @@ Rails.application.routes.draw do
   # end
   namespace :api do
     namespace :v1 do
+      post 'register_user', to: 'candidates#register_user' 
+      resources :clubs, only: [:index]
       resources :academies do
         resources :lessons, only: [:create]
         resources :sponsors, only: [:create]

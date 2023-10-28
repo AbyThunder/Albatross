@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_01_174701) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_14_091514) do
   create_table "academies", force: :cascade do |t|
     t.integer "edition_number"
     t.string "package"
@@ -27,14 +27,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_01_174701) do
   end
 
   create_table "candidates", force: :cascade do |t|
-    t.integer "academy_id"
     t.string "name"
     t.integer "status", default: 0
     t.string "email"
     t.string "phone"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["academy_id"], name: "index_candidates_on_academy_id"
+    t.integer "academy_id"
   end
 
   create_table "candidates_lessons", id: false, force: :cascade do |t|
@@ -51,6 +50,22 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_01_174701) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["other_classification_id"], name: "index_classification_types_on_other_classification_id"
+  end
+
+  create_table "clubs", force: :cascade do |t|
+    t.string "name"
+    t.string "address"
+    t.string "contact_full_name"
+    t.string "contact_phone_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "clubs_users", id: false, force: :cascade do |t|
+    t.integer "club_id", null: false
+    t.integer "user_id", null: false
+    t.index ["club_id", "user_id"], name: "index_clubs_users_on_club_id_and_user_id"
+    t.index ["user_id", "club_id"], name: "index_clubs_users_on_user_id_and_club_id"
   end
 
   create_table "competitions", force: :cascade do |t|

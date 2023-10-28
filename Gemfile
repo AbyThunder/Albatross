@@ -45,6 +45,7 @@ gem 'devise'
 gem 'pry'
 gem 'cancancan'
 gem 'fast_jsonapi'
+gem 'rack-cors'
 # Use Sass to process CSS
 # gem "sassc-rails"
 
