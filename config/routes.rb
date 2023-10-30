@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: 'json' } do
     namespace :v1 do
-      post 'register_user', to: 'candidates#register_user' 
+      post 'register_user', to: 'users#register_user' 
       resources :clubs, only: [:index]
       resources :academies do
         resources :lessons, only: [:create]
