@@ -1,7 +1,8 @@
 module Api
   module V1
     class AcademiesController < ApplicationController
-      before_action :set_academy, only: [:show, :update, :destroy, :create_lesson]
+      #before_action :set_academy, only: [:show, :update, :destroy, :create_lesson]
+      skip_before_action :verify_authenticity_token
 
       def index
         academies = Academy.all
@@ -20,16 +21,18 @@ module Api
         academy_params = JSON.parse(request.body.read)
 
         frontend_params = {
-          edition_number: user_params["Editon Number"],
-          package: user_params["Participant Package"],
-          season: user_params["Time Period"],
-          sponsor: user_params["Sponsor"] 
+          edition_number: academy_params["Editon Number"],
+          package: academy_params["Participant Package"],
+          season: academy_params["Time Period"],
+          sponsor: academy_params["Sponsors"] 
         }
 
         academy = Academy.new(frontend_params)
         if academy.save
-          render json: AcademySerializer.new(academy), status: :created
+          render json: { message: 'Academy registered successfully' }, status: :created
+          #render json: AcademySerializer.new(academy), status: :created
         else
+          Rails.logger.debug user.errors.full_messages.to_sentence
           render json: { errors: academy.errors }, status: :unprocessable_entity
         end
       end
@@ -42,7 +45,7 @@ module Api
         end
       end
 
-    def destroy
+      def destroy
         @academy.destroy
         render json: { message: 'Academy was successfully destroyed.' }, status: :ok
       end

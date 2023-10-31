@@ -5,8 +5,11 @@ Rails.application.routes.draw do
     namespace :v1 do
       post 'register_user', to: 'users#register_user'
       post 'academy/create', to: 'academies#create'
+      post 'tournament/create', to: 'tournaments#create'
+      post 'league/create', to: 'leagues#create'
+      post 'academy/update', to: 'leagues#update'
       resources :clubs, only: [:index]
-      resources :academies do
+      resources :academies, only: [:index] do
         resources :lessons, only: [:create]
         resources :sponsors, only: [:create]
       end
@@ -21,6 +24,8 @@ Rails.application.routes.draw do
         end
       end
       resources :homeblocks, only: [:index]
+      resources :tournaments, only: [:index]
+      resources :leagues, only: [:index]
     end
   end
 end
