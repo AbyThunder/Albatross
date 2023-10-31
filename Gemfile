@@ -46,6 +46,7 @@ gem 'pry'
 gem 'cancancan'
 gem 'fast_jsonapi'
 gem 'rack-cors'
+gem 'faker'
 # Use Sass to process CSS
 # gem "sassc-rails"
 

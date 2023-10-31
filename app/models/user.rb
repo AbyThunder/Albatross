@@ -4,10 +4,18 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  enum role: { admin: 0, manager: 1, trainer: 2, player: 3, candidate: 4, applied: 5, unqualified_candidate: 6}
+  enum role: { 
+    admin: 'admin', 
+    manager: 'manager', 
+    trainer: 'trainer', 
+    player: 'player', 
+    candidate: 'candidate', 
+    applied: 'applied', 
+    unqualified_candidate: 'unqualified_candidate'
+  }
 
   belongs_to :academy, optional: true
   belongs_to :league_registration, optional: true
   has_and_belongs_to_many :clubs
-  has_and_belongs_to_many :lessons, -> { where(role: 'candidate') }
+  has_and_belongs_to_many :lessons, -> { where(role: :candidate) }
 end

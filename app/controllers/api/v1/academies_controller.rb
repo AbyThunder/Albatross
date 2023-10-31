@@ -17,7 +17,16 @@ module Api
       end
 
       def create
-        academy = Academy.new(academy_params)
+        academy_params = JSON.parse(request.body.read)
+
+        frontend_params = {
+          edition_number: user_params["Editon Number"],
+          package: user_params["Participant Package"],
+          season: user_params["Time Period"],
+          sponsor: user_params["Sponsor"] 
+        }
+
+        academy = Academy.new(frontend_params)
         if academy.save
           render json: AcademySerializer.new(academy), status: :created
         else
@@ -33,7 +42,7 @@ module Api
         end
       end
 
-      def destroy
+    def destroy
         @academy.destroy
         render json: { message: 'Academy was successfully destroyed.' }, status: :ok
       end

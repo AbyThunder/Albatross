@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_30_171918) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_31_002310) do
   create_table "academies", force: :cascade do |t|
     t.integer "edition_number"
     t.string "package"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "season"
+    t.string "sponsor"
   end
 
   create_table "academies_sponsors", id: false, force: :cascade do |t|

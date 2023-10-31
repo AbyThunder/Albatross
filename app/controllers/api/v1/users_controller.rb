@@ -9,7 +9,7 @@ module Api
         # Access the JSON data using params[:user]
         user_params = JSON.parse(request.body.read)
 
-        club_name = user_params["GolfClub"]
+        club_name = user_params["Golf Clubs"]
         club = Club.find_by(name: club_name)
         
         if club.nil?
@@ -17,18 +17,19 @@ module Api
           return
         end
 
-        backend_params = {
+        frontend_params = {
           first_name: user_params["Name"],
           last_name: user_params["Surname"],
           email: user_params["Email"],
-          phone: user_params["PhoneNumber"],
+          phone: user_params["Phone Number"],
+          address: user_params["Address"],
           password: user_params["Password"],
-          password_confirmation: user_params["ConfirmPassword"]
+          password_confirmation: user_params["Repeat Password"],
+          role: :applied
         }
-        
+
         # Perform user registration logic here
-        user = User.new(backend_params)
-        puts 'added user'
+        user = User.new(frontend_params)
         user.clubs << club
         
         # You can return a response indicating success or failure
