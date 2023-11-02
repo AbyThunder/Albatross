@@ -47,6 +47,7 @@ gem 'cancancan'
 gem 'fast_jsonapi'
 gem 'rack-cors'
 gem 'faker'
+gem 'active_model_serializers'
 # Use Sass to process CSS
 # gem "sassc-rails"
 

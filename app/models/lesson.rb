@@ -3,7 +3,7 @@ class Lesson < ApplicationRecord
   has_and_belongs_to_many :users
   has_many :trainers_lessons
   has_many :trainers, through: :trainers_lessons, class_name: 'Trainer'
-  has_many :competitions
+  has_many :lesson_competitions
 
   def candidates
     users.where(role: User.roles[:candidate])

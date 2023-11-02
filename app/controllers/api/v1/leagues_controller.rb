@@ -8,6 +8,11 @@ module Api
         render json: league
       end
 
+      def names
+        league_names = League.all.pluck(:name)
+        render json: league_names
+      end
+
       def create
         league_params = JSON.parse(request.body.read)
 

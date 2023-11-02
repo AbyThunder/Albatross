@@ -25,7 +25,11 @@ Rails.application.routes.draw do
       end
       resources :homeblocks, only: [:index]
       resources :tournaments, only: [:index]
-      resources :leagues, only: [:index]
+      resources :leagues, only: [:index] do
+        collection do
+          get :names
+        end
+      end
     end
   end
 end

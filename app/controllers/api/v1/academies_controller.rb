@@ -6,7 +6,7 @@ module Api
 
       def index
         academies = Academy.all
-        render json: AcademySerializer.new(academies).serializable_hash
+        render json: academies
       end
 
       def show

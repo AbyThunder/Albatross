@@ -1,7 +1,3 @@
-class AcademySerializer
-  include FastJsonapi::ObjectSerializer
-  attributes :edition_number, :package, :season, :sponsor
-
-  has_many :lessons
-  has_many :sponsors
+class AcademySerializer < ActiveModel::Serializer
+  attributes :id, :name, :edition_number, :season, :status
 end

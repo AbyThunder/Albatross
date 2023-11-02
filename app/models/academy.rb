@@ -1,6 +1,7 @@
 class Academy < ApplicationRecord
   has_one :schedule
-  has_many :candidates
   has_many :lessons
-  has_and_belongs_to_many :sponsors
+  has_many :academy_sponsors
+
+  enum status: { upcoming: 'upcoming', ongoing: 'ongoing', completed: 'completed' }
 end
