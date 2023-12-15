@@ -6,14 +6,15 @@ Rails.application.routes.draw do
       post 'register_user', to: 'users#register_user'
       post 'academy/create', to: 'academies#create'
       post 'tournament/create', to: 'tournaments#create'
+      post 'lesson/create', to: 'lessons#create'
       post 'league/create', to: 'leagues#create'
       post 'academy/update', to: 'leagues#update'
       resources :clubs, only: [:index]
-      resources :academies, only: [:index] do
+      resources :academies, only: [:index, :show] do
         resources :lessons, only: [:create]
         resources :sponsors, only: [:create]
       end
-      resources :lessons do
+      resources :lessons, only: [:index, :show] do
         resources :trainers, only: [:index, :create]
       end
       resources :trainers
@@ -24,8 +25,8 @@ Rails.application.routes.draw do
         end
       end
       resources :homeblocks, only: [:index]
-      resources :tournaments, only: [:index]
-      resources :leagues, only: [:index] do
+      resources :tournaments, only: [:index, :show, :update]
+      resources :leagues, only: [:index, :show] do
         collection do
           get :names
         end

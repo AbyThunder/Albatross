@@ -10,35 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_02_214950) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_05_180256) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "academies", force: :cascade do |t|
     t.string "edition_number"
     t.string "package"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "season"
-    t.string "sponsor"
     t.string "status", default: "upcoming", null: false
     t.string "name"
+    t.string "image_url"
   end
 
   create_table "academy_sponsors", force: :cascade do |t|
-    t.integer "academy_id"
+    t.bigint "academy_id"
     t.string "name"
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "image_url"
     t.index ["academy_id"], name: "index_academy_sponsors_on_academy_id"
-  end
-
-  create_table "classification_types", force: :cascade do |t|
-    t.integer "other_classification_id"
-    t.string "name"
-    t.string "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["other_classification_id"], name: "index_classification_types_on_other_classification_id"
   end
 
   create_table "clubs", force: :cascade do |t|
@@ -51,38 +45,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_02_214950) do
   end
 
   create_table "clubs_users", id: false, force: :cascade do |t|
-    t.integer "club_id", null: false
-    t.integer "user_id", null: false
+    t.bigint "club_id", null: false
+    t.bigint "user_id", null: false
     t.index ["club_id", "user_id"], name: "index_clubs_users_on_club_id_and_user_id"
     t.index ["user_id", "club_id"], name: "index_clubs_users_on_user_id_and_club_id"
   end
 
   create_table "flights", force: :cascade do |t|
-    t.integer "round_id"
+    t.bigint "round_id"
     t.string "tee_time"
     t.string "hole"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["round_id"], name: "index_flights_on_round_id"
-  end
-
-  create_table "general_classifications", force: :cascade do |t|
-    t.integer "league_id"
-    t.string "name"
-    t.string "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["league_id"], name: "index_general_classifications_on_league_id"
-  end
-
-  create_table "general_rewards", force: :cascade do |t|
-    t.integer "general_classification_id"
-    t.string "name"
-    t.string "description"
-    t.string "winner"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["general_classification_id"], name: "index_general_rewards_on_general_classification_id"
   end
 
   create_table "homeblocks", force: :cascade do |t|
@@ -96,8 +71,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_02_214950) do
   end
 
   create_table "league_registrations", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "league_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "league_id", null: false
     t.boolean "current", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -105,8 +80,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_02_214950) do
     t.index ["user_id"], name: "index_league_registrations_on_user_id"
   end
 
-  create_table "league_sponsors", force: :cascade do |t|
+  create_table "league_rewards", force: :cascade do |t|
     t.integer "league_id"
+    t.string "prize"
+    t.string "condition"
+    t.string "sponsor"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["league_id"], name: "index_league_rewards_on_league_id"
+  end
+
+  create_table "league_sponsors", force: :cascade do |t|
+    t.bigint "league_id"
     t.string "name"
     t.string "description"
     t.datetime "created_at", null: false
@@ -124,65 +109,49 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_02_214950) do
     t.string "status", default: "upcoming", null: false
     t.string "name"
     t.string "date"
+    t.string "classification"
+    t.string "image_url"
     t.index ["name"], name: "index_leagues_on_name", unique: true
   end
 
-  create_table "lesson_competitions", force: :cascade do |t|
-    t.integer "lesson_id"
-    t.string "name"
-    t.string "description"
+  create_table "lesson_rewards", force: :cascade do |t|
+    t.bigint "lesson_id"
+    t.string "sponsor"
+    t.string "condition"
     t.string "prize"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["lesson_id"], name: "index_lesson_competitions_on_lesson_id"
+    t.index ["lesson_id"], name: "index_lesson_rewards_on_lesson_id"
   end
 
   create_table "lessons", force: :cascade do |t|
-    t.integer "academy_id"
+    t.bigint "academy_id"
     t.date "date"
     t.string "place"
     t.string "description"
     t.string "freebie"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
     t.index ["academy_id"], name: "index_lessons_on_academy_id"
   end
 
   create_table "lessons_academies", id: false, force: :cascade do |t|
-    t.integer "lesson_id"
-    t.integer "academy_id"
+    t.bigint "lesson_id"
+    t.bigint "academy_id"
     t.index ["academy_id"], name: "index_lessons_academies_on_academy_id"
     t.index ["lesson_id"], name: "index_lessons_academies_on_lesson_id"
   end
 
   create_table "lessons_users", id: false, force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "lesson_id"
+    t.bigint "user_id"
+    t.bigint "lesson_id"
     t.index ["lesson_id"], name: "index_lessons_users_on_lesson_id"
     t.index ["user_id"], name: "index_lessons_users_on_user_id"
   end
 
-  create_table "other_classifications", force: :cascade do |t|
-    t.integer "league_id"
-    t.string "name"
-    t.string "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["league_id"], name: "index_other_classifications_on_league_id"
-  end
-
-  create_table "other_rewards", force: :cascade do |t|
-    t.integer "classification_type_id"
-    t.string "name"
-    t.string "description"
-    t.string "winner"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["classification_type_id"], name: "index_other_rewards_on_classification_type_id"
-  end
-
   create_table "round_contests", force: :cascade do |t|
-    t.integer "round_id"
+    t.bigint "round_id"
     t.string "name"
     t.string "description"
     t.string "prize"
@@ -194,7 +163,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_02_214950) do
   end
 
   create_table "round_results", force: :cascade do |t|
-    t.integer "round_id"
+    t.bigint "round_id"
     t.string "classification"
     t.string "prize"
     t.datetime "created_at", null: false
@@ -203,7 +172,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_02_214950) do
   end
 
   create_table "rounds", force: :cascade do |t|
-    t.integer "tournament_id"
+    t.bigint "tournament_id"
     t.date "date"
     t.string "description"
     t.string "place"
@@ -217,7 +186,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_02_214950) do
   end
 
   create_table "schedules", force: :cascade do |t|
-    t.integer "academy_id"
+    t.bigint "academy_id"
     t.date "date"
     t.string "description"
     t.datetime "created_at", null: false
@@ -226,7 +195,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_02_214950) do
   end
 
   create_table "tournament_results", force: :cascade do |t|
-    t.integer "tournament_id"
+    t.bigint "tournament_id"
     t.string "classification"
     t.string "prize"
     t.datetime "created_at", null: false
@@ -235,7 +204,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_02_214950) do
   end
 
   create_table "tournament_rewards", force: :cascade do |t|
-    t.integer "tournament_id"
+    t.bigint "tournament_id"
     t.string "prize"
     t.string "condition"
     t.string "sponsor"
@@ -245,7 +214,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_02_214950) do
   end
 
   create_table "tournament_sponsors", force: :cascade do |t|
-    t.integer "tournament_id"
+    t.bigint "tournament_id"
     t.string "name"
     t.string "image_url"
     t.string "description"
@@ -255,7 +224,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_02_214950) do
   end
 
   create_table "tournaments", force: :cascade do |t|
-    t.integer "league_id"
+    t.bigint "league_id"
     t.date "date"
     t.string "place"
     t.string "name"
@@ -272,11 +241,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_02_214950) do
     t.string "status", default: "upcoming", null: false
     t.integer "holes"
     t.string "additional_information"
+    t.string "time"
+    t.string "gen_classification"
+    t.string "image_url"
     t.index ["league_id"], name: "index_tournaments_on_league_id"
   end
 
   create_table "trainers", force: :cascade do |t|
-    t.integer "lesson_id"
+    t.bigint "lesson_id"
     t.string "name"
     t.string "description"
     t.datetime "created_at", null: false
@@ -285,8 +257,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_02_214950) do
   end
 
   create_table "trainers_lessons", id: false, force: :cascade do |t|
-    t.integer "trainer_id"
-    t.integer "lesson_id"
+    t.bigint "trainer_id"
+    t.bigint "lesson_id"
     t.index ["lesson_id"], name: "index_trainers_lessons_on_lesson_id"
     t.index ["trainer_id"], name: "index_trainers_lessons_on_trainer_id"
   end

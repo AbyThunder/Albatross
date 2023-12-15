@@ -6,15 +6,12 @@ module Api
 
       def index
         academies = Academy.all
-        render json: academies
+        render json: academies, is_index: true
       end
 
       def show
-        render json: {
-          academy: AcademySerializer.new(@academy),
-          sponsors: @academy.sponsors.distinct,
-          lessons: LessonSerializer.new(@academy.lessons.includes(:trainers))
-        }
+        academy = Academy.find(params[:id])
+        render json: academy, is_edit: true
       end
 
       def create
@@ -24,53 +21,33 @@ module Api
           edition_number: academy_params["Editon Number"],
           package: academy_params["Participant Package"],
           season: academy_params["Time Period"],
-          sponsor: academy_params["Sponsors"] 
+          sponsor: academy_params["Sponsors"],
+          image_url: academy_params["Academy Image"],
         }
 
         academy = Academy.new(frontend_params)
+
         if academy.save
+          create_sponsors(academy, academy_params["Sponsors"])
+
           render json: { message: 'Academy registered successfully' }, status: :created
-          #render json: AcademySerializer.new(academy), status: :created
         else
           Rails.logger.debug user.errors.full_messages.to_sentence
           render json: { errors: academy.errors }, status: :unprocessable_entity
         end
       end
 
-      def update
-        if @academy.update(academy_params)
-          render json: AcademySerializer.new(@academy), status: :ok
-        else
-          render json: { errors: @academy.errors }, status: :unprocessable_entity
-        end
-      end
-
-      def destroy
-        @academy.destroy
-        render json: { message: 'Academy was successfully destroyed.' }, status: :ok
-      end
-
-      def create_lesson
-        lesson = @academy.lessons.build(lesson_params)
-        if lesson.save
-          render json: LessonSerializer.new(lesson), status: :created
-        else
-          render json: { errors: lesson.errors }, status: :unprocessable_entity
-        end
-      end
-
       private
 
-      def set_academy
-        @academy = Academy.find(params[:id])
-      end
-
-      def academy_params
-        params.require(:academy).permit(:edition_number, :package, :season, sponsor_ids: [])
-      end
-
-      def lesson_params
-        params.require(:lesson).permit(:date, :place, :description, :freebie)
+      def create_sponsors(academy, sponsors)
+        sponsors.each do |sponsor|
+          AcademySponsor.create(
+            name: sponsor["Name"],
+            image_url: sponsor["Image"],
+            description: sponsor["Slogan"],
+            academy_id: academy.id
+          )
+        end
       end
     end
   end

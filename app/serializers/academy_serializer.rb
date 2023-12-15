@@ -1,3 +1,19 @@
 class AcademySerializer < ActiveModel::Serializer
-  attributes :id, :name, :edition_number, :season, :status
+  attributes :id
+  attribute :name
+  attribute :edition_number
+  attribute :image_url
+  attribute :status, if: :is_index?
+  attribute :package, if: :is_edit?
+  attribute :season, if: :is_edit?
+
+  has_many :academy_sponsors, if: :is_edit?
+
+  def is_index?
+    instance_options[:is_index]
+  end
+
+  def is_edit?
+    instance_options[:is_edit]
+  end
 end
