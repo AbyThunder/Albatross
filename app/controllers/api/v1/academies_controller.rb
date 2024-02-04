@@ -11,7 +11,7 @@ module Api
 
       def show
         academy = Academy.find(params[:id])
-        render json: academy, is_edit: true
+        render json: build_academy_json(academy), is_edit: true
       end
 
       def create
@@ -48,6 +48,45 @@ module Api
             academy_id: academy.id
           )
         end
+      end
+
+      def build_academy_json(academy)
+        {
+          id: academy.id,
+          name: academy.name,
+          "home-boxes": build_home_boxes(academy)
+          # Additional academy details...
+        }
+      end
+
+      def build_home_boxes(academy)
+        # Assuming you have a method for each box type
+        [
+          build_status_box(academy),
+          build_player_details_box(academy),
+          build_image_box(academy),
+          build_reference_box(academy),
+          build_table_box(academy)
+          # Add more boxes as needed
+        ]
+      end
+
+      # Example method to build a specific box
+      def build_status_box(academy)
+        {
+          BoxType: "TextBox",
+          Title: "My Status",
+          LowerText: "Academy status or description here"
+          # Use academy data to fill in details
+        }
+      end
+
+      def build_player_details_box(academy)
+        {
+          BoxType: "PlayerList",
+          Title: "Players in Academy",
+          Players: academy.players.map { |player| player.name } # Assuming players have names
+        }
       end
     end
   end
