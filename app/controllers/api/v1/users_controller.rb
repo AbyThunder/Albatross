@@ -9,13 +9,13 @@ module Api
         # Access the JSON data using params[:user]
         user_params = JSON.parse(request.body.read)
 
-        club_name = user_params["Golf Clubs"]
-        club = Club.find_by(name: club_name)
+        # club_name = user_params["Golf Clubs"]
+        # club = Club.find_by(name: club_name)
         
-        if club.nil?
-          render json: { errors: 'Club not found' }, status: :unprocessable_entity
-          return
-        end
+        # if club.nil?
+        #   render json: { errors: 'Club not found' }, status: :unprocessable_entity
+        #   return
+        # end
 
         frontend_params = {
           first_name: user_params["Name"],
@@ -30,7 +30,7 @@ module Api
 
         # Perform user registration logic here
         user = User.new(frontend_params)
-        user.clubs << club
+        # user.clubs << club
         
         # You can return a response indicating success or failure
         if user.save
