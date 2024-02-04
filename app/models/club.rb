@@ -2,8 +2,8 @@
 
 class Club < ApplicationRecord
   has_and_belongs_to_many :users
-  has_many :academies
-  has_many :leagues
+  # has_many :academies
+  # has_many :leagues
 
   # Validation example: ensure presence of name and address
   validates :name, presence: true
