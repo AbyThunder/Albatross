@@ -1,11 +1,11 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  # For details on connection pooling, see Rails configuration guide
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: ab
-  password: monster21
-  host: localhost
+  # Consider moving username and password to environment variables for development and test
+  username: <%= ENV['DB_USERNAME'] || 'ab' %>
+  password: <%= ENV['DB_PASSWORD'] || '@1b@tr0$$' %>
+  host: <%= ENV['DB_HOST'] || 'localhost' %>
 
 development:
   <<: *default
@@ -17,7 +17,4 @@ test:
 
 production:
   <<: *default
-  # database: albatross_production
-  # username: your_production_username
-  # password: <%= ENV['YOUR_DATABASE_PASSWORD'] %>
   url: <%= ENV['DATABASE_URL'] %>
