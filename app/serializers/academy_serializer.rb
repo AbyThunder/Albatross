@@ -5,7 +5,7 @@ class AcademySerializer < ActiveModel::Serializer
   attribute :image_url
   attribute :status, if: :is_index?
   attribute :package, if: :is_edit?
-  attribute :season, if: :is_edit?
+  attribute :season
 
   has_many :academy_sponsors, if: :is_edit?
 

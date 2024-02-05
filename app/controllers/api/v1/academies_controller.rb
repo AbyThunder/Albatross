@@ -18,6 +18,7 @@ module Api
         academy_params = JSON.parse(request.body.read)
 
         frontend_params = {
+          name: academy_params["Name"],
           edition_number: academy_params["Editon Number"],
           package: academy_params["Participant Package"],
           season: academy_params["Time Period"],
