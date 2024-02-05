@@ -21,7 +21,6 @@ module Api
           edition_number: academy_params["Editon Number"],
           package: academy_params["Participant Package"],
           season: academy_params["Time Period"],
-          sponsor: academy_params["Sponsors"],
           image_url: academy_params["Academy Image"],
         }
 
