@@ -3,6 +3,7 @@ module Api
     class AcademiesController < ApplicationController
       #before_action :set_academy, only: [:show, :update, :destroy, :create_lesson]
       skip_before_action :verify_authenticity_token
+      load_and_authorize_resource
 
       def index
         academies = Academy.all
@@ -32,7 +33,7 @@ module Api
 
           render json: { message: 'Academy registered successfully' }, status: :created
         else
-          Rails.logger.debug user.errors.full_messages.to_sentence
+          Rails.logger.debug academy.errors.full_messages.to_sentence
           render json: { errors: academy.errors }, status: :unprocessable_entity
         end
       end

@@ -48,6 +48,7 @@ gem 'fast_jsonapi'
 gem 'rack-cors'
 gem 'faker'
 gem 'active_model_serializers'
+gem 'devise_token_auth'
 # Use Sass to process CSS
 # gem "sassc-rails"
 

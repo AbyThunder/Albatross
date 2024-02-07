@@ -1,6 +1,6 @@
 module Api
   module V1
-    class TournamentsController < ApplicationController
+    class TournamentsController < BaseController
       skip_before_action :verify_authenticity_token
 
       def index

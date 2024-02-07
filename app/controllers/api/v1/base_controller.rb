@@ -2,7 +2,8 @@ module Api
   module V1
     class BaseController < ApplicationController
       # Turn off CSRF protection for APIs
-      protect_from_forgery with: :null_session
+      # protect_from_forgery with: :null_session
+      skip_before_action :verify_authenticity_token
 
       # Methods specific to V1 of your API
 

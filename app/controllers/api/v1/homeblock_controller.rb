@@ -1,6 +1,6 @@
 module Api
   module V1
-    class HomeblockController < ApplicationController
+    class HomeblockController < BaseController
       before_action :authenticate_user!
       load_and_authorize_resource
 
