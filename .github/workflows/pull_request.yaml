@@ -44,7 +44,7 @@ jobs:
           --health-retries 5
     env:
       RAILS_ENV: test
-      GEMFILE_RUBY_VERSION: 3.1.0
+      GEMFILE_RUBY_VERSION: 3.2.3
       PGHOST: localhost
       PGUSER: postgres
       # Rails verifies the time zone in DB is the same as the time zone of the Rails app
@@ -54,8 +54,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          # Not needed with a .ruby-version file
-          ruby-version: 3.1.0
+          ruby-version: 3.2.3
           # runs 'bundle install' and caches installed gems automatically
           bundler-cache: true
       - name: Install libvips
