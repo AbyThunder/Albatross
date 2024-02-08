@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module Api
   module V1
     class AcademiesController < ApplicationController
-      #before_action :set_academy, only: [:show, :update, :destroy, :create_lesson]
+      # before_action :set_academy, only: [:show, :update, :destroy, :create_lesson]
       skip_before_action :verify_authenticity_token
 
       def index
@@ -18,21 +20,21 @@ module Api
         academy_params = JSON.parse(request.body.read)
 
         frontend_params = {
-          name: academy_params["Academy Name"],
-          edition_number: academy_params["Editon Number"],
-          package: academy_params["Participant Package"],
-          season: academy_params["Time Period"],
-          image_url: academy_params["Academy Image"],
+          name: academy_params['Academy Name'],
+          edition_number: academy_params['Editon Number'],
+          package: academy_params['Participant Package'],
+          season: academy_params['Time Period'],
+          image_url: academy_params['Academy Image']
         }
 
         academy = Academy.new(frontend_params)
 
         if academy.save
-          create_sponsors(academy, academy_params["Sponsors"])
+          create_sponsors(academy, academy_params['Sponsors'])
 
           render json: { message: 'Academy registered successfully' }, status: :created
         else
-          Rails.logger.debug user.errors.full_messages.to_sentence
+          Rails.logger.debug(user.errors.full_messages.to_sentence)
           render json: { errors: academy.errors }, status: :unprocessable_entity
         end
       end
@@ -42,9 +44,9 @@ module Api
       def create_sponsors(academy, sponsors)
         sponsors.each do |sponsor|
           AcademySponsor.create(
-            name: sponsor["Name"],
-            image_url: sponsor["Image"],
-            description: sponsor["Slogan"],
+            name: sponsor['Name'],
+            image_url: sponsor['Image'],
+            description: sponsor['Slogan'],
             academy_id: academy.id
           )
         end
@@ -54,7 +56,7 @@ module Api
         {
           id: academy.id,
           name: academy.name,
-          "home-boxes": build_home_boxes(academy)
+          'home-boxes': build_home_boxes(academy)
           # Additional academy details...
         }
       end
@@ -72,20 +74,20 @@ module Api
       end
 
       # Example method to build a specific box
-      def build_status_box(academy)
+      def build_status_box(_academy)
         {
-          BoxType: "TextBox",
-          Title: "My Status",
-          LowerText: "Academy status or description here"
+          BoxType: 'TextBox',
+          Title: 'My Status',
+          LowerText: 'Academy status or description here'
           # Use academy data to fill in details
         }
       end
 
       def build_player_details_box(academy)
         {
-          BoxType: "PlayerList",
-          Title: "Players in Academy",
-          Players: academy.players.map { |player| player.name } # Assuming players have names
+          BoxType: 'PlayerList',
+          Title: 'Players in Academy',
+          Players: academy.players.map(&:name) # Assuming players have names
         }
       end
     end
