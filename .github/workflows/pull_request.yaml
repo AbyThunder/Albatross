@@ -44,7 +44,7 @@ jobs:
           --health-retries 5
     env:
       RAILS_ENV: test
-      GEMFILE_RUBY_VERSION: 3.2.2
+      GEMFILE_RUBY_VERSION: 3.2.2g
       PGHOST: localhost
       PGUSER: postgres
       # Rails verifies the time zone in DB is the same as the time zone of the Rails app
@@ -59,8 +59,6 @@ jobs:
           bundler-cache: true
       - name: Install libvips
         run: sudo apt-get update && sudo apt-get install -y libvips
-      - name: Build JS
-        run: npm install && npm run build:all
       - name: Create DB
         run: |
           bin/rails db:create db:migrate
