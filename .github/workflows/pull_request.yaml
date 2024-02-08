@@ -1,0 +1,68 @@
+name: Pull Request workflow
+
+on:
+  pull_request:
+    branches:
+      - staging
+      - master
+
+jobs:
+  rubocop: 
+    runs-on: ubuntu-latest
+    if: '! github.event.pull_request.draft'
+    steps: 
+      - uses: actions/checkout@v3
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Run Rubocop
+        run: bundle exec rubocop -c .rubocop.yml -f progress
+
+  rspec:
+    needs: [rubocop]
+    runs-on: ubuntu-latest
+    if: '! github.event.pull_request.draft'
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:14.5
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ""
+          POSTGRES_DB: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        # tmpfs makes DB faster by using RAM
+        options: >-
+          --mount type=tmpfs,destination=/var/lib/postgresql/data
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      RAILS_ENV: test
+      GEMFILE_RUBY_VERSION: 3.2.2g
+      PGHOST: localhost
+      PGUSER: postgres
+      # Rails verifies the time zone in DB is the same as the time zone of the Rails app
+      TZ: "Europe/Warsaw"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2.2
+          # runs 'bundle install' and caches installed gems automatically
+          bundler-cache: true
+      - name: Install libvips
+        run: sudo apt-get update && sudo apt-get install -y libvips
+      - name: Create DB
+        run: |
+          bin/rails db:create db:migrate
+      - name: Run tests
+        run: |
+          bundle exec rspec spec
+

@@ -1,4 +1,8 @@
+# frozen_string_literal: true
+
 class Trainer < ApplicationRecord
-  has_many :trainers_lessons
-  has_many :lessons, through: :trainers_lessons, class_name: 'Lesson'
+  has_many :trainers_lessons, dependent: :destroy
+  has_many :lessons,          class_name: 'Lesson',
+                              through: :trainers_lessons,
+                              dependent: :destroy
 end

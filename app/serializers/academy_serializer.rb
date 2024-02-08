@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AcademySerializer < ActiveModel::Serializer
   attributes :id
   attribute :name
