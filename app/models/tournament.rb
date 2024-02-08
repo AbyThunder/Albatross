@@ -2,11 +2,11 @@
 
 class Tournament < ApplicationRecord
   belongs_to :league
-  has_many :rounds
-  has_many :players
-  has_many :tournament_results
-  has_many :tournament_rewards
-  has_many :tournament_sponsors
+  has_many :rounds,              dependent: :destroy
+  has_many :players,             dependent: :destroy
+  has_many :tournament_results,  dependent: :destroy
+  has_many :tournament_rewards,  dependent: :destroy
+  has_many :tournament_sponsors, dependent: :destroy
 
   enum status: { upcoming: 'upcoming', ongoing: 'ongoing', completed: 'completed' }
 end

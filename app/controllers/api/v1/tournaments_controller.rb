@@ -15,6 +15,7 @@ module Api
         render json: tournament, is_edit: true
       end
 
+      # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
       def create
         tournament_params = JSON.parse(request.body.read)
 
@@ -25,7 +26,8 @@ module Api
         holes = integer_param(tournament_params['Amount of Holes'], errors, 'Amount of Holes')
         min_players = integer_param(tournament_params['Min Players'], errors, 'Min Players')
         max_players = integer_param(tournament_params['Max Players'], errors, 'Max Players')
-        hcp = float_param(tournament_params['HCP'], errors, 'HCP')
+        # unused variable
+        # hcp = float_param(tournament_params['HCP'], errors, 'HCP')
 
         # Validate positive integers
         errors << 'Number of Rounds must be a positive number' if num_rounds && num_rounds <= 0
@@ -91,7 +93,8 @@ module Api
         holes = integer_param(tournament_params['Amount of Holes'], errors, 'Amount of Holes')
         min_players = integer_param(tournament_params['Min Players'], errors, 'Min Players')
         max_players = integer_param(tournament_params['Max Players'], errors, 'Max Players')
-        hcp = float_param(tournament_params['HCP'], errors, 'HCP')
+        # unused variable
+        # hcp = float_param(tournament_params['HCP'], errors, 'HCP')
 
         errors << 'Number of Rounds must be a positive number' if num_rounds && num_rounds <= 0
         errors << 'Number of Holes must be a positive number' if holes && holes <= 0
@@ -131,6 +134,8 @@ module Api
           render json: { errors: tournament.errors }, status: :unprocessable_entity
         end
       end
+
+      # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
       private
 

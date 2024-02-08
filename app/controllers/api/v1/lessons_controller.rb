@@ -23,8 +23,9 @@ module Api
       def create
         lesson_params = JSON.parse(request.body.read)
 
-        academy_name = lesson_params['Associated Academy']
-        academy = Academy.find_by(name: academy_name)
+        # unused assignments
+        # academy_name = lesson_params['Associated Academy']
+        # academy = Academy.find_by(name: academy_name)
 
         frontend_params = {
           name: lesson_params['Name'],
@@ -32,7 +33,7 @@ module Api
           date: lesson_params['Date'],
           place: lesson_params['Location'],
           freebie: lesson_params['Gratis Items'],
-          academy_id: 1 # academy.id
+          academy_id: 1 # academy.id hardcoded :'(
         }
 
         lesson = Lesson.new(frontend_params)
