@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_08_205131) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_09_171151) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -245,22 +245,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_08_205131) do
     t.string "gen_classification"
     t.string "image_url"
     t.index ["league_id"], name: "index_tournaments_on_league_id"
-  end
-
-  create_table "trainers", force: :cascade do |t|
-    t.bigint "lesson_id"
-    t.string "name"
-    t.string "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["lesson_id"], name: "index_trainers_on_lesson_id"
-  end
-
-  create_table "trainers_lessons", id: false, force: :cascade do |t|
-    t.bigint "trainer_id"
-    t.bigint "lesson_id"
-    t.index ["lesson_id"], name: "index_trainers_lessons_on_lesson_id"
-    t.index ["trainer_id"], name: "index_trainers_lessons_on_trainer_id"
   end
 
   create_table "users", force: :cascade do |t|
