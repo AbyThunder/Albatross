@@ -6,7 +6,6 @@ FactoryBot.define do
     last_name { 'Doe' }
     phone { '+48883942316' }
     address { Faker::Address.street_address }
-    status { :applied }
     email { Faker::Internet.email }
     password { 'password123' }
     password_confirmation { 'password123' }

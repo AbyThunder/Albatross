@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_09_195429) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_09_200744) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -58,16 +58,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_09_195429) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["round_id"], name: "index_flights_on_round_id"
-  end
-
-  create_table "league_registrations", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "league_id", null: false
-    t.boolean "current", default: true
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["league_id"], name: "index_league_registrations_on_league_id"
-    t.index ["user_id"], name: "index_league_registrations_on_user_id"
   end
 
   create_table "league_rewards", force: :cascade do |t|
@@ -236,20 +226,19 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_09_195429) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "role"
     t.string "first_name"
     t.string "last_name"
     t.string "address"
     t.string "phone"
     t.bigint "academy_id"
     t.bigint "league_registration_id"
-    t.string "status"
+    t.string "type", default: "User", null: false
+    t.integer "status", default: 0
+    t.boolean "access_to_league_and_tournament", default: false
     t.index ["academy_id"], name: "index_users_on_academy_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["league_registration_id"], name: "index_users_on_league_registration_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "league_registrations", "leagues"
-  add_foreign_key "league_registrations", "users"
 end
