@@ -6,6 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.2.2'
 
 gem 'active_model_serializers'
+gem 'aws-sdk-s3'
 gem 'bootsnap', require: false
 gem 'devise'
 gem 'dotenv-rails'
