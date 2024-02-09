@@ -3,7 +3,11 @@
 # spec/factories/academy.rb
 FactoryBot.define do
   factory :academy do
-    season { 'Summer 24' }
-    edition_number { 1 }
+    name { 'Academy Name' }
+    season { '2023 Spring' }
+    package { 'Standard Package' }
+    edition_number { 'Edition 1' }
+    status { 'upcoming' }
+    image_url { 'http://example.com/image.png' }
   end
 end
