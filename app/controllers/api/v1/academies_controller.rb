@@ -4,7 +4,6 @@ module Api
   module V1
     class AcademiesController < ApplicationController
       # before_action :set_academy, only: [:show, :update, :destroy, :create_lesson]
-      skip_before_action :verify_authenticity_token
 
       def index
         academies = Academy.all
