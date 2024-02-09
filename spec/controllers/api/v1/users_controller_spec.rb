@@ -1,9 +1,73 @@
 # frozen_string_literal: true
 
-# spec/controllers/api/v1/users_controller_spec.rb
 require 'rails_helper'
 
 RSpec.describe Api::V1::UsersController do
+  describe '#show' do
+    let(:request) { get :show, params: { id: user.id, version: 'v1' } }
+    let(:user) { create(:user) }
+
+    context 'when user is logged in, and requests their own details' do
+      before do
+        sign_in user
+        request
+      end
+
+      it 'renderses correct json', :aggregate_failures do
+        expect(response.body).to match(UserSerializer.new(user).to_json)
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context 'when user is not logged in' do
+      before { request }
+
+      it 'renderses an error', :aggregate_failures do
+        expect(response.body).to include('Error')
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'when a non-existent user id is requested' do
+      let(:request) { get :show, params: { id: '123', version: 'v1' } }
+
+      before { request }
+
+      it 'renderses 404', :aggregate_failures do
+        expect(response.body).to include('Couldn\'t find')
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+
+    context 'when a logged in user tries to fetch a different user\'s data' do
+      let(:user2) { create(:user) }
+
+      before do
+        sign_in user2
+        request
+      end
+
+      it 'renderses an error', :aggregate_failures do
+        expect(response.body).to include('Error')
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'when a manager tries to fetch a different user\'s data' do
+      let(:user2) { create(:user, type: 'Manager') }
+
+      before do
+        sign_in user2
+        request
+      end
+
+      it 'renderses the user', :aggregate_failures do
+        expect(response.body).to match(UserSerializer.new(user).to_json)
+        expect(response).to have_http_status(:ok)
+      end
+    end
+  end
+
   describe 'POST #register_user' do
     let(:club) { create(:club, name: 'Test Club', address: 'Address') }
     let(:valid_attributes) do

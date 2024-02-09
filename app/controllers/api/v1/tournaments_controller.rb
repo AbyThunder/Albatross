@@ -3,8 +3,6 @@
 module Api
   module V1
     class TournamentsController < ApplicationController
-      skip_before_action :verify_authenticity_token
-
       def index
         tournaments = Tournament.all
         render json: tournaments, is_index: true

@@ -6,6 +6,8 @@ module Routes
     def self.extended(router)
       router.instance_exec do
         namespace :v1, path: '' do
+          resources :users, only: :show
+
           post 'register_user', to: 'users#register_user'
           post 'academy/create', to: 'academies#create'
           post 'tournament/create', to: 'tournaments#create'

@@ -2,9 +2,7 @@
 
 module Api
   module V1
-    class LessonsController < BaseController
-      skip_before_action :verify_authenticity_token
-
+    class LessonsController < ApplicationController
       def index
         lesson = Lesson.all
         render json: lesson, is_index: true

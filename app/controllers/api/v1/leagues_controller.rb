@@ -3,8 +3,6 @@
 module Api
   module V1
     class LeaguesController < ApplicationController
-      skip_before_action :verify_authenticity_token
-
       def index
         league = League.all
         render json: league, is_index: true
