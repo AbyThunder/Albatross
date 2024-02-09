@@ -21,7 +21,7 @@ module Api
           edition_number: params['Editon Number'],
           package: params['Participant Package'],
           season: params['Time Period'],
-          image: params['Academy Image']
+          # image: params['Academy Image']
         }
 
         academy = Academy.new(frontend_params)
