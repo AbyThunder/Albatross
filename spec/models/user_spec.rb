@@ -7,7 +7,6 @@ RSpec.describe User do
 
   describe 'associations' do
     it { is_expected.to belong_to(:academy).optional }
-    it { is_expected.to belong_to(:league_registration).optional }
   end
 
   describe 'validations' do

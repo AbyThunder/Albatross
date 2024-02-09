@@ -18,8 +18,6 @@ RSpec.describe League do
   it { is_expected.to validate_length_of(:classification).is_at_most(100) }
 
   it { is_expected.to have_many(:tournaments).dependent(:destroy) }
-  it { is_expected.to have_many(:league_registrations).dependent(:destroy) }
-  it { is_expected.to have_many(:users).through(:league_registrations).dependent(:destroy) }
   it { is_expected.to have_many(:league_sponsors).dependent(:destroy) }
   it { is_expected.to have_many(:league_rewards).dependent(:destroy) }
 
