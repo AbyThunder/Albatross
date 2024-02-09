@@ -7,11 +7,9 @@ ruby '3.2.2'
 
 gem 'active_model_serializers'
 gem 'bootsnap', require: false
-gem 'cancancan'
 gem 'devise'
 gem 'dotenv-rails'
 gem 'faker'
-gem 'fast_jsonapi'
 gem 'importmap-rails'
 gem 'jbuilder'
 gem 'pg'
