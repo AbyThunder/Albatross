@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class SponsorsController < BaseController
+    class SponsorsController < ApplicationController
       def create
         @academy = Academy.find(params[:academy_id])
         @sponsor = @academy.sponsors.build(sponsor_params)

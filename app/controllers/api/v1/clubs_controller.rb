@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class ClubsController < ApplicationController
+    class ClubsController < ApplicationControllerg
       def index
         clubs = Club.all.pluck(:name)
         render json: clubs
