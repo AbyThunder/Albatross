@@ -3,32 +3,30 @@
 require 'rails_helper'
 
 RSpec.describe User do
-  let(:user) do
-    create(:user, first_name: 'John', last_name: 'Doe', email: 'john.doe@example.com', phone: '+48123456789',
-                  password: 'password', password_confirmation: 'password')
+  subject(:user) { create(:user) }
+
+  describe 'associations' do
+    it { is_expected.to belong_to(:academy).optional }
+    it { is_expected.to belong_to(:league_registration).optional }
   end
 
-  it 'is valid with valid attributes' do
-    expect(user).to be_valid
-  end
+  describe 'validations' do
+    it { is_expected.to validate_presence_of(:first_name) }
+    it { is_expected.to validate_presence_of(:last_name) }
+    it { is_expected.to validate_length_of(:first_name).is_at_most(50) }
+    it { is_expected.to validate_length_of(:last_name).is_at_most(50) }
+    it { is_expected.to define_enum_for(:status).with_values(described_class.statuses) }
 
-  it 'is not valid with a first name longer than 50 characters' do
-    user.first_name = 'a' * 51
-    expect(user).not_to be_valid
-  end
+    context 'when phone number is improperly formatted' do
+      before { user.phone = '12345' }
 
-  it 'is not valid with a last name longer than 50 characters' do
-    user.last_name = 'a' * 51
-    expect(user).not_to be_valid
-  end
+      it { is_expected.not_to be_valid }
+    end
 
-  it 'is not valid with an improperly formatted phone number' do
-    user.phone = '12345'
-    expect(user).not_to be_valid
-  end
+    context 'when polish phone number is passed without the country code' do
+      before { user.phone = '123456789' }
 
-  it 'accepts a valid Polish phone number without the country code' do
-    user.phone = '123456789'
-    expect(user).to be_valid
+      it { is_expected.to be_valid }
+    end
   end
 end
