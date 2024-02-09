@@ -60,16 +60,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_09_200744) do
     t.index ["round_id"], name: "index_flights_on_round_id"
   end
 
-  create_table "homeblocks", force: :cascade do |t|
-    t.string "box_type"
-    t.string "title"
-    t.text "lower_text"
-    t.string "redirect_url"
-    t.string "role"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "league_rewards", force: :cascade do |t|
     t.integer "league_id"
     t.string "prize"
