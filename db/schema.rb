@@ -175,15 +175,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_09_200744) do
     t.index ["tournament_id"], name: "index_rounds_on_tournament_id"
   end
 
-  create_table "schedules", force: :cascade do |t|
-    t.bigint "academy_id"
-    t.date "date"
-    t.string "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["academy_id"], name: "index_schedules_on_academy_id"
-  end
-
   create_table "tournament_results", force: :cascade do |t|
     t.bigint "tournament_id"
     t.string "classification"
