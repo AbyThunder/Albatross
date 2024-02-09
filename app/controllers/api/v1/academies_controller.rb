@@ -17,20 +17,18 @@ module Api
       end
 
       def create
-        academy_params = JSON.parse(request.body.read)
-
         frontend_params = {
-          name: academy_params['Academy Name'],
-          edition_number: academy_params['Editon Number'],
-          package: academy_params['Participant Package'],
-          season: academy_params['Time Period'],
-          image_url: academy_params['Academy Image']
+          name: params['Academy Name'],
+          edition_number: params['Editon Number'],
+          package: params['Participant Package'],
+          season: params['Time Period'],
+          image: params['Academy Image']
         }
 
         academy = Academy.new(frontend_params)
 
-        if academy.save
-          create_sponsors(academy, academy_params['Sponsors'])
+        if academy.save!
+          create_sponsors(academy, params['Sponsors'])
 
           render json: { message: 'Academy registered successfully' }, status: :created
         else
@@ -40,6 +38,10 @@ module Api
       end
 
       private
+
+      def permitted_params
+        params.permit(:name, :season, :edition_number, :package, :image)
+      end
 
       def create_sponsors(academy, sponsors)
         sponsors.each do |sponsor|
