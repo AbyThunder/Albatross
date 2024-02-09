@@ -3,8 +3,15 @@
 module Api
   module V1
     class UsersController < ApplicationController
-      skip_before_action :verify_authenticity_token
-      # skip_before_action :authenticate_user!, only: [:register_user]
+      POLICY_CLASS = ::UserPolicy
+
+      before_action :user, only: [:show]
+
+      def show
+        authorize(params[:id], :show?)
+
+        render json: user
+      end
 
       def register_user
         # Handle the JSON data here
@@ -47,6 +54,10 @@ module Api
 
       def user_params
         params.require(:user).permit(:email, :password, :password_confirmation)
+      end
+
+      def user
+        @user ||= User.find(params[:id])
       end
     end
   end
