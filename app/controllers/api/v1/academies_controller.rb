@@ -20,7 +20,7 @@ module Api
           name: params['Academy Name'],
           edition_number: params['Editon Number'],
           package: params['Participant Package'],
-          season: params['Time Period'],
+          season: params['Time Period']
           # image: params['Academy Image']
         }
 
