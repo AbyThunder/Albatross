@@ -14,7 +14,6 @@ class Tournament < ApplicationRecord
   validates :place, length: { maximum: 255 }
   validates :package, length: { maximum: 255 }
   validates :hcp, length: { maximum: 50 }
-  validates :additional_costs, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :additional_information, length: { maximum: 500 }, allow_blank: true
   validates :num_rounds, :cost, :additional_costs, :min_players, :max_players,
             numericality: { only_integer: true, greater_than_or_equal_to: 0 }

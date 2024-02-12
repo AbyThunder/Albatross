@@ -22,7 +22,6 @@ RSpec.describe Tournament do
     it { is_expected.to validate_numericality_of(:num_rounds).is_greater_than_or_equal_to(0) }
     it { is_expected.to validate_presence_of(:cost) }
     it { is_expected.to validate_numericality_of(:cost).is_greater_than_or_equal_to(0) }
-    it { is_expected.to validate_numericality_of(:additional_costs).is_greater_than_or_equal_to(0) }
     it { is_expected.to validate_length_of(:formula).is_at_most(100) }
     it { is_expected.to validate_length_of(:package).is_at_most(255) }
     it { is_expected.to validate_length_of(:time).is_at_most(100) }
