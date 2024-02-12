@@ -45,14 +45,14 @@ module Api
           render json: { message: 'User registered successfully' }, status: :created
         else
           Rails.logger.debug(user.errors.full_messages.to_sentence)
-          render json: { errors: 'User registration failed' }, status: :unprocessable_entity
+          render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
         end
       end
 
       private
 
       def user_params
-        params.require(:user).permit(:email, :password, :password_confirmation)
+        params.permit(:first_name, :last_name, :email, :phone, :address, :password, :password_confirmation)
       end
 
       def user
