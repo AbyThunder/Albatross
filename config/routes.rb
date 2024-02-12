@@ -5,6 +5,8 @@ Dir.glob('config/routes/v*').each do |version_routes|
 end
 
 Rails.application.routes.draw do
+  mount Rswag::Ui::Engine => '/api-docs'
+  mount Rswag::Api::Engine => '/api-docs'
   devise_for :users
 
   scope '(:locale)', locale: /en|pl/ do

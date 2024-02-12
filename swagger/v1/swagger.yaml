@@ -1,0 +1,108 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "API V1",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/v1/leagues": {
+      "post": {
+        "summary": "Creates a league",
+        "tags": [
+          "Leagues"
+        ],
+        "parameters": [
+
+        ],
+        "responses": {
+          "201": {
+            "description": "league created"
+          },
+          "422": {
+            "description": "invalid request"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "editionNumber": {
+                    "type": "integer"
+                  },
+                  "date": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "participationCost": {
+                    "type": "integer"
+                  },
+                  "participantPackage": {
+                    "type": "string"
+                  },
+                  "generalClassification": {
+                    "type": "string"
+                  },
+                  "leagueImage": {
+                    "type": "string"
+                  },
+                  "rewards": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "classification": {
+                          "type": "string"
+                        },
+                        "reward": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "sponsors": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "image": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "name",
+                  "editionNumber",
+                  "date",
+                  "participationCost"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{defaultHost}",
+      "variables": {
+        "defaultHost": {
+          "default": "www.example.com"
+        }
+      }
+    }
+  ]
+}

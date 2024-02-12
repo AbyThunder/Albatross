@@ -20,6 +20,8 @@ gem 'pundit'
 gem 'rack-cors'
 gem 'rails', '~> 7.0.2'
 gem 'sprockets-rails'
+gem 'rswag-api'
+gem 'rswag'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
