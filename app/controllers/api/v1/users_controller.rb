@@ -3,7 +3,6 @@
 module Api
   module V1
     class UsersController < ApplicationController
-      skip_before_action :verify_authenticity_token
       POLICY_CLASS = ::UserPolicy
 
       before_action :user, only: [:show]
