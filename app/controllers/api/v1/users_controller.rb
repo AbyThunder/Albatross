@@ -33,8 +33,7 @@ module Api
           phone: user_params['Phone Number'],
           address: user_params['Address'],
           password: user_params['Password'],
-          password_confirmation: user_params['Repeat Password'],
-          role: :applied
+          password_confirmation: user_params['Repeat Password']
         }
 
         # Perform user registration logic here
