@@ -19,32 +19,41 @@ module Api
       end
 
       def create
-        league_params = JSON.parse(request.body.read)
-
-        frontend_params = {
-          name: league_params['Season Name'],
-          edition_number: league_params['Season Number'],
-          price: league_params['Participation Cost'],
-          package: league_params['Participant Package'],
-          classification: league_params['General Classification'],
-          image_url: league_params['League Image'],
-          date: league_params['Date']
-        }
-
-        league = League.new(frontend_params)
+        league = League.new(permitted_params)
 
         if league.save
-          create_rewards(league, league_params['Rewards'])
-          create_sponsors(league, league_params['Sponsors'])
+          create_rewards(league, params['Rewards'])
+          create_sponsors(league, params['Sponsors'])
+          # create_rewards(league, params[:rewards])
+          # create_sponsors(league, params[:sponsors])
 
           render json: { message: 'League registered successfully' }, status: :created
         else
-          Rails.logger.debug(league.errors.full_messages.to_sentence)
-          render json: { errors: league.errors }, status: :unprocessable_entity
+          render json: { errors: league.errors.full_messages }, status: :unprocessable_entity
         end
       end
 
       private
+
+      def permitted_params
+        params.require(:league).permit(:name, :edition_number, :price, :package, :classification, :image_url, :date)
+      end
+
+      # def create_rewards(league, rewards)
+      #   return unless rewards
+
+      #   rewards.each do |reward|
+      #     league.league_rewards.create(reward.permit(:condition, :sponsor, :prize))
+      #   end
+      # end
+
+      # def create_sponsors(league, sponsors)
+      #   return unless sponsors
+
+      #   sponsors.each do |sponsor|
+      #     league.league_sponsors.create(sponsor.permit(:name, :image_url, :description))
+      #   end
+      # end
 
       def create_rewards(league, rewards)
         rewards.each do |reward|

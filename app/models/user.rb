@@ -15,9 +15,7 @@ class User < ApplicationRecord
     refused: 30
   }
 
-  belongs_to :academy, optional: true
-  # has_and_belongs_to_many :clubs
-  has_and_belongs_to_many :lessons # rubocop:disable Rails/HasAndBelongsToMany
+  belongs_to :club
 
   validates :first_name, :last_name, presence: true, length: { maximum: 50 }
   validates :phone, phone: true, allow_blank: true

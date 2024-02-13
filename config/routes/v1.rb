@@ -22,14 +22,6 @@ module Routes
           resources :lessons, only: [:index, :show] do
             resources :trainers, only: [:index, :create]
           end
-          resources :trainers
-          resources :managers, only: [] do
-            member do
-              get 'assign_trainer'
-              post 'save_trainer_assignment'
-            end
-          end
-          resources :homeblocks, only: [:index]
           resources :tournaments, only: [:index, :show, :update]
           resources :leagues, only: [:index, :show] do
             collection do

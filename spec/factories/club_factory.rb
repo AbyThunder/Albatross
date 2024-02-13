@@ -2,6 +2,7 @@
 
 FactoryBot.define do
   factory :club do
-    name { Faker::Sports::Golf.course }
+    name { Faker::Company.name }
+    address { Faker::Address.full_address }
   end
 end
