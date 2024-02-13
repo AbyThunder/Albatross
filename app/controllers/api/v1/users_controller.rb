@@ -27,7 +27,7 @@ module Api
         if user.save
           render json: { message: 'User registered successfully' }, status: :created
         else
-          render json: { errors: user.errors.full_messages.to_sentence }, status: :unprocessable_entity
+          render json: { errors: user.errors.full_messages}, status: :unprocessable_entity
         end
       end
 
