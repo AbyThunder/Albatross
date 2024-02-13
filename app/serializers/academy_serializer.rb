@@ -8,6 +8,8 @@ class AcademySerializer < ActiveModel::Serializer
   attribute :status, if: :is_index?
   attribute :package, if: :is_edit?
   attribute :season
+  attribute :description, if: :is_edit?
+  attribute :contact, if: :is_edit?
 
   has_many :academy_sponsors, if: :is_edit?
 

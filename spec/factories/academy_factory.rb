@@ -8,5 +8,7 @@ FactoryBot.define do
     package { 'Standard Package' }
     edition_number { 'Edition 1' }
     status { 'upcoming' }
+    description { 'Description' }
+    contact { 'Contact' }
   end
 end

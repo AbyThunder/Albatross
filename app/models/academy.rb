@@ -12,4 +12,6 @@ class Academy < ApplicationRecord
   validates :season, length: { maximum: 100 }, presence: true
   validates :package, length: { maximum: 255 }, presence: true
   validates :edition_number, length: { maximum: 100 }, presence: true
+  validates :description, length: { maximum: 255 }, presence: true
+  validates :contact, length: { maximum: 255 }, presence: true
 end

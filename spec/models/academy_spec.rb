@@ -15,7 +15,11 @@ RSpec.describe Academy do
     it { is_expected.to validate_presence_of(:season) }
     it { is_expected.to validate_presence_of(:package) }
     it { is_expected.to validate_presence_of(:edition_number) }
+    it { is_expected.to validate_presence_of(:description) }
+    it { is_expected.to validate_presence_of(:contact) }
 
+    it { is_expected.to validate_length_of(:description).is_at_most(255) }
+    it { is_expected.to validate_length_of(:contact).is_at_most(255) }
     it { is_expected.to validate_length_of(:name).is_at_most(100) }
     it { is_expected.to validate_length_of(:season).is_at_most(100) }
     it { is_expected.to validate_length_of(:package).is_at_most(255) }
