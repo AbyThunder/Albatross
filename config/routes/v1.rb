@@ -13,7 +13,7 @@ module Routes
           post 'tournament/create', to: 'tournaments#create'
           post 'lesson/create', to: 'lessons#create'
           post 'league/create', to: 'leagues#create'
-          post 'academy/update', to: 'leagues#update'
+          post 'academy/update', to: 'academys#update'
           resources :clubs, only: [:index]
           resources :academies, only: [:index, :show] do
             resources :lessons, only: [:create]

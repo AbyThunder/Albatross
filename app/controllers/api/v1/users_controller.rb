@@ -14,10 +14,10 @@ module Api
       end
 
       def register_user
-        club = Club.find_by(name: user_params[:club_id])
+        club = Club.find_by(name: params[:club_id])
 
         if club.nil?
-          render json: { errors: 'Club not found' }, status: :unprocessable_entity
+          render json: { errors: "Club not found for provided ID: #{club}" }, status: :unprocessable_entity
           return
         end
 
@@ -27,7 +27,7 @@ module Api
         if user.save
           render json: { message: 'User registered successfully' }, status: :created
         else
-          render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+          render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
         end
       end
 
@@ -35,7 +35,7 @@ module Api
 
       def user_params
         params.permit(:first_name, :last_name, :email, :phone, :address, :password,
-                                     :password_confirmation, :club_id)
+                      :password_confirmation, :club_id)
       end
 
       def user

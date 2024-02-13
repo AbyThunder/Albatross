@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Api::V1::ApplicationController < ActionController::API
+  before_action :snake_case_params
+
   include Pundit::Authorization
   include PunditWrapper
 
@@ -27,5 +29,9 @@ class Api::V1::ApplicationController < ActionController::API
     )
 
     render json: error, status: :forbidden
+  end
+
+  def snake_case_params
+    request.parameters.deep_transform_keys!(&:underscore)
   end
 end

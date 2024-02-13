@@ -2,7 +2,7 @@
 
 class Academy < ApplicationRecord
   has_many :lessons,          dependent: :destroy
-  has_many :academy_sponsors, dependent: :destroy
+  has_many :academy_sponsors, dependent: :destroy, class_name: 'AcademySponsor'
 
   has_one_attached :image
 

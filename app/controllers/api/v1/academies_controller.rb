@@ -19,8 +19,19 @@ module Api
         academy = Academy.new(permitted_params)
 
         if academy.save
-          create_sponsors(academy, params['Sponsors'])
+          create_or_update_sponsors(academy, params[:sponsors], false)
           render json: { message: 'Academy registered successfully' }, status: :created
+        else
+          render json: { errors: academy.errors.full_messages }, status: :unprocessable_entity
+        end
+      end
+
+      def update
+        academy = Academy.find(params[:id])
+
+        if academy.update(permitted_params)
+          create_or_update_sponsors(academy, params[:sponsors], update)
+          render json: { message: 'Academy updated successfully' }, status: :ok
         else
           render json: { errors: academy.errors.full_messages }, status: :unprocessable_entity
         end
@@ -29,17 +40,19 @@ module Api
       private
 
       def permitted_params
-        params.permit(:name, :season, :edition_number, :package, :image)
+        params.permit(:name, :season, :edition_number, :package) # :image
       end
 
-      def create_sponsors(academy, sponsors)
-        sponsors.each do |sponsor|
-          AcademySponsor.create(
-            name: sponsor['Name'],
-            image_url: sponsor['Image'],
-            description: sponsor['Slogan'],
-            academy_id: academy.id
-          )
+      def create_or_update_sponsors(academy, sponsors, update)
+        sponsors&.each do |sponsor|
+          filtered_params = sponsor.permit(:name, :image_url, :description)
+
+          if update
+            s = academy.academy_sponsors.find_or_initialize_by(name: filtered_params[:name])
+            s.update(filtered_params)
+          else
+            academy.academy_sponsors.create(filtered_params)
+          end
         end
       end
     end

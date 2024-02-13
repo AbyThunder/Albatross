@@ -22,12 +22,20 @@ module Api
         league = League.new(permitted_params)
 
         if league.save
-          create_rewards(league, params['Rewards'])
-          create_sponsors(league, params['Sponsors'])
-          # create_rewards(league, params[:rewards])
-          # create_sponsors(league, params[:sponsors])
+          handle_rewards_and_sponsors(league, params)
 
           render json: { message: 'League registered successfully' }, status: :created
+        else
+          render json: { errors: league.errors.full_messages }, status: :unprocessable_entity
+        end
+      end
+
+      def update
+        league = League.find(params[:id])
+
+        if league.update(permitted_params)
+          handle_rewards_and_sponsors(league, params, update: true)
+          render json: { message: 'League updated successfully' }, status: :ok
         else
           render json: { errors: league.errors.full_messages }, status: :unprocessable_entity
         end
@@ -39,41 +47,30 @@ module Api
         params.permit(:name, :edition_number, :price, :package, :classification, :image_url, :date)
       end
 
-      # def create_rewards(league, rewards)
-      #   return unless rewards
+      def handle_rewards_and_sponsors(league, params, update: false)
+        create_or_update_rewards(league, params[:rewards], update)
+        create_or_update_sponsors(league, params[:sponsors], update)
+      end
 
-      #   rewards.each do |reward|
-      #     league.league_rewards.create(reward.permit(:condition, :sponsor, :prize))
-      #   end
-      # end
-
-      # def create_sponsors(league, sponsors)
-      #   return unless sponsors
-
-      #   sponsors.each do |sponsor|
-      #     league.league_sponsors.create(sponsor.permit(:name, :image_url, :description))
-      #   end
-      # end
-
-      def create_rewards(league, rewards)
-        rewards.each do |reward|
-          LeagueReward.create(
-            condition: reward['Condition'],
-            sponsor: reward['Sponsor'],
-            prize: reward['Reward'],
-            league_id: league.id
-          )
+      def create_or_update_rewards(league, rewards, update)
+        rewards&.each do |reward|
+          if update
+            r = league.league_rewards.find_or_initialize_by(condition: reward[:condition])
+            r.update(reward.slice(:sponsor, :prize))
+          else
+            league.league_rewards.create(reward.permit(:condition, :sponsor, :prize))
+          end
         end
       end
 
-      def create_sponsors(league, sponsors)
-        sponsors.each do |sponsor|
-          LeagueSponsor.create(
-            name: sponsor['Name'],
-            image_url: sponsor['Image'],
-            description: sponsor['Slogan'],
-            league_id: league.id
-          )
+      def create_or_update_sponsors(league, sponsors, update)
+        sponsors&.each do |sponsor|
+          if update
+            s = league.league_sponsors.find_or_initialize_by(name: sponsor[:name])
+            s.update(sponsor.slice(:image_url, :description))
+          else
+            league.league_sponsors.create(sponsor.permit(:name, :image_url, :description))
+          end
         end
       end
     end
