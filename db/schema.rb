@@ -224,7 +224,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_12_235421) do
 
   create_table "tournaments", force: :cascade do |t|
     t.bigint "league_id"
-    t.date "date"
+  t.date "date"
     t.string "place"
     t.string "name"
     t.integer "num_rounds"

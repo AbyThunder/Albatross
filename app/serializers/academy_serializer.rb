@@ -4,7 +4,7 @@ class AcademySerializer < ActiveModel::Serializer
   attributes :id
   attribute :name
   attribute :edition_number
-  attribute :image_url
+  # attribute :image_url
   attribute :status, if: :is_index?
   attribute :package, if: :is_edit?
   attribute :season
