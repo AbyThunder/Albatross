@@ -36,7 +36,7 @@ module Api
       private
 
       def permitted_params
-        params.require(:league).permit(:name, :edition_number, :price, :package, :classification, :image_url, :date)
+        params.permit(:name, :edition_number, :price, :package, :classification, :image_url, :date)
       end
 
       # def create_rewards(league, rewards)

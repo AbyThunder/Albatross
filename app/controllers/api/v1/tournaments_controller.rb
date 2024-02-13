@@ -50,7 +50,7 @@ module Api
       end
 
       def tournament_params
-        params.require(:tournament).permit(:name, :date, :place, :time, :num_rounds, :holes, :cost, :package,
+        params.permit(:name, :date, :place, :time, :num_rounds, :holes, :cost, :package,
                                            :additional_information, :formula, :hcp, :min_players, :max_players,
                                            :gen_classification, :image_url)
       end
