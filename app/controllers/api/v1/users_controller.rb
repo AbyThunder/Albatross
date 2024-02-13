@@ -35,7 +35,8 @@ module Api
       private
 
       def user_registration_params
-        params.require(:user).permit(:first_name, :last_name, :email, :phone, :address, :password, :password_confirmation, :club_id)
+        params.require(:user).permit(:first_name, :last_name, :email, :phone, :address, :password,
+                                     :password_confirmation, :club_id)
       end
 
       def user

@@ -68,7 +68,7 @@ RSpec.describe Api::V1::UsersController do
     end
   end
 
-  describe "POST #register_user" do
+  describe 'POST #register_user' do
     let(:club) { create(:club) }
     let(:valid_attributes) do
       {
@@ -87,9 +87,9 @@ RSpec.describe Api::V1::UsersController do
     context 'with valid params', skip: 'failing tests' do
       it 'creates a new User and assigns to the club', :aggregate_failures do
         request.headers['CONTENT_TYPE'] = 'application/json'
-        expect {
-          post :register_user, params: valid_attributes, as: :json
-        }.to change(User, :count).by(1)
+        expect do
+          post(:register_user, params: valid_attributes, as: :json)
+        end.to change(User, :count).by(1)
         expect(User.last.club).to eq(club)
         expect(response).to have_http_status(:created)
         expect(JSON.parse(response.body)['message']).to eq('User registered successfully')
@@ -98,9 +98,9 @@ RSpec.describe Api::V1::UsersController do
 
     context 'with invalid params', skip: 'failing tests' do
       it 'does not create a new User', :aggregate_failures do
-        expect {
-          post :register_user, params: invalid_attributes, as: :json
-        }.not_to change(User, :count)
+        expect do
+          post(:register_user, params: invalid_attributes, as: :json)
+        end.not_to change(User, :count)
         expect(response).to have_http_status(:unprocessable_entity)
         expect(JSON.parse(response.body)['errors']).to eq('User registration failed')
       end

@@ -3,7 +3,7 @@
 # app/models/club.rb
 
 class Club < ApplicationRecord
-  has_many :users
+  has_many :users, dependent: :destroy
   # has_many :academies
   # has_many :leagues
 
