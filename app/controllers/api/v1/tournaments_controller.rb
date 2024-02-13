@@ -45,7 +45,7 @@ module Api
       private
 
       def set_league
-        @league = League.find_by(name: params[:associated_league])
+        @league = League.find_by(name: params[:league_id])
         render json: { error: 'League not found' }, status: :not_found unless @league
       end
 

@@ -14,7 +14,7 @@ module Api
       end
 
       def register_user
-        club = Club.find_by(name: user_params[club_id])
+        club = Club.find_by(name: user_params[:club_id])
 
         if club.nil?
           render json: { errors: 'Club not found' }, status: :unprocessable_entity
