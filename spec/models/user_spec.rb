@@ -6,7 +6,7 @@ RSpec.describe User do
   subject(:user) { create(:user) }
 
   describe 'associations' do
-    it { is_expected.to belong_to(:academy).optional }
+    it { is_expected.to belong_to(:club) }
   end
 
   describe 'validations' do

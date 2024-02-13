@@ -14,46 +14,29 @@ module Api
       end
 
       def register_user
-        # Handle the JSON data here
-        # Access the JSON data using params[:user]
-        user_params = JSON.parse(request.body.read)
+        user_params = user_registration_params
+        club = Club.find_by(name: user_params.delete(:club_id))
 
-        # club_name = user_params["Golf Clubs"]
-        # club = Club.find_by(name: club_name)
+        if club.nil?
+          render json: { errors: 'Club not found' }, status: :unprocessable_entity
+          return
+        end
 
-        # if club.nil?
-        #   render json: { errors: 'Club not found' }, status: :unprocessable_entity
-        #   return
-        # end
+        user = User.new(user_params)
+        user.club = club
 
-        frontend_params = {
-          first_name: user_params['Name'],
-          last_name: user_params['Surname'],
-          email: user_params['Email'],
-          phone: user_params['Phone Number'],
-          address: user_params['Address'],
-          password: user_params['Password'],
-          password_confirmation: user_params['Repeat Password'],
-          status: 0
-        }
-
-        # Perform user registration logic here
-        user = User.new(frontend_params)
-        # user.clubs << club
-
-        # You can return a response indicating success or failure
         if user.save
           render json: { message: 'User registered successfully' }, status: :created
         else
-          Rails.logger.debug(user.errors.full_messages.to_sentence)
-          render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
+          render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
         end
       end
 
       private
 
-      def user_params
-        params.permit(:first_name, :last_name, :email, :phone, :address, :password, :password_confirmation, :status)
+      def user_registration_params
+        params.require(:user).permit(:first_name, :last_name, :email, :phone, :address, :password,
+                                     :password_confirmation, :club_id)
       end
 
       def user

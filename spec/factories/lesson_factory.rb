@@ -5,6 +5,7 @@ FactoryBot.define do
     association :academy
     name { 'Lesson Name' }
     date { Time.zone.today }
+    time { '10am' }
     place { 'Lesson Place' }
     description { 'Lesson Description' }
     freebie { 'Lesson Freebie' }

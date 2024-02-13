@@ -3,6 +3,8 @@
 module Api
   module V1
     class TournamentsController < ApplicationController
+      # before_action :set_league, only: [:create, :update]
+
       def index
         tournaments = Tournament.all
         render json: tournaments, is_index: true
@@ -13,129 +15,45 @@ module Api
         render json: tournament, is_edit: true
       end
 
-      # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
       def create
-        tournament_params = JSON.parse(request.body.read)
-
-        errors = []
-
-        # Convert and validate values
-        num_rounds = integer_param(tournament_params['Amount of Rounds'], errors, 'Amount of Rounds')
-        holes = integer_param(tournament_params['Amount of Holes'], errors, 'Amount of Holes')
-        min_players = integer_param(tournament_params['Min Players'], errors, 'Min Players')
-        max_players = integer_param(tournament_params['Max Players'], errors, 'Max Players')
-        # unused variable
-        # hcp = float_param(tournament_params['HCP'], errors, 'HCP')
-
-        # Validate positive integers
-        errors << 'Number of Rounds must be a positive number' if num_rounds && num_rounds <= 0
-        errors << 'Number of Holes must be a positive number' if holes && holes <= 0
-        errors << 'Minimum Players must be a non-negative number' if min_players&.negative?
-        errors << 'Maximum Players must be a positive number' if max_players && max_players <= 0
-
-        unless errors.empty?
-          render json: { errors: errors }, status: :bad_request
-          return
-        end
-
-        league_name = tournament_params['Associated League']
-        league = League.find_by(name: league_name)
-
-        unless league
-          render json: { errors: 'League not found' }, status: :not_found
-          return
-        end
-
-        frontend_params = {
-          name: tournament_params['Name of Tournament'],
-          date: tournament_params['Date of Tournament'],
-          place: tournament_params['Playing Field'],
-          time: tournament_params['Time of Tournament'],
-          num_rounds: tournament_params['Amount of Rounds'],
-          holes: tournament_params['Amount of Holes'],
-          cost: tournament_params['Price of Participation'],
-          package: tournament_params['What is in the price?'],
-          additional_information: tournament_params['Additional Information'],
-          formula: tournament_params['Formula'],
-          hcp: tournament_params['HCP'],
-          min_players: tournament_params['Min Players'],
-          max_players: tournament_params['Max Players'],
-          gen_classification: tournament_params['General Classification'],
-          image_url: tournament_params['Tournament Image'],
-          league_id: league.id
-        }
-
-        tournament = Tournament.new(frontend_params)
+        tournament = Tournament.new(tournament_params.merge(league_id: @league.id))
 
         if tournament.save
+          # handle_rewards_and_sponsors(tournament, params)
           create_rewards(tournament, tournament_params['Rewards'])
           create_sponsors(tournament, tournament_params['Sponsors'])
-
           render json: { message: 'Tournament registered successfully' }, status: :created
         else
-          Rails.logger.debug(tournament.errors.full_messages.to_sentence)
-          render json: { errors: tournament.errors }, status: :unprocessable_entity
+          render json: { errors: tournament.errors.full_messages }, status: :unprocessable_entity
         end
       end
 
       def update
         tournament = Tournament.find(params[:id])
-        tournament_params = JSON.parse(request.body.read)
+        tournament_params.merge(league_id: @league.id)
 
-        league_name = tournament_params['Associated League']
-        league = League.find_by(name: league_name)
-
-        errors = []
-
-        num_rounds = integer_param(tournament_params['Amount of Rounds'], errors, 'Amount of Rounds')
-        holes = integer_param(tournament_params['Amount of Holes'], errors, 'Amount of Holes')
-        min_players = integer_param(tournament_params['Min Players'], errors, 'Min Players')
-        max_players = integer_param(tournament_params['Max Players'], errors, 'Max Players')
-        # unused variable
-        # hcp = float_param(tournament_params['HCP'], errors, 'HCP')
-
-        errors << 'Number of Rounds must be a positive number' if num_rounds && num_rounds <= 0
-        errors << 'Number of Holes must be a positive number' if holes && holes <= 0
-        errors << 'Minimum Players must be a non-negative number' if min_players&.negative?
-        errors << 'Maximum Players must be a positive number' if max_players && max_players <= 0
-
-        unless errors.empty?
-          render json: { errors: errors }, status: :bad_request
-          return
-        end
-
-        frontend_params = {
-          name: tournament_params['Name of Tournament'],
-          date: tournament_params['Date of Tournament'],
-          place: tournament_params['Playing Field'],
-          time: tournament_params['Time of Tournament'],
-          num_rounds: tournament_params['Amount of Rounds'],
-          holes: tournament_params['Amount of Holes'],
-          cost: tournament_params['Price of Participation'],
-          package: tournament_params['What is in the price?'],
-          additional_information: tournament_params['Additional Information'],
-          formula: tournament_params['Formula'],
-          hcp: tournament_params['HCP'],
-          min_players: tournament_params['Min Players'],
-          max_players: tournament_params['Max Players'],
-          gen_classification: tournament_params['General Classification'],
-          image_url: tournament_params['Tournament Image'],
-          league_id: league.id
-        }
-
-        if tournament.update(frontend_params)
+        if tournament.update(tournament_params)
+          # handle_rewards_and_sponsors(tournament, params, update: true)
           update_rewards(tournament, tournament_params['Rewards'])
           update_sponsors(tournament, tournament_params['Sponsors'])
           render json: { message: 'Tournament updated successfully' }, status: :ok
         else
-          Rails.logger.debug(tournament.errors.full_messages.to_sentence)
-          render json: { errors: tournament.errors }, status: :unprocessable_entity
+          render json: { errors: tournament.errors.full_messages }, status: :unprocessable_entity
         end
       end
 
-      # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-
       private
+
+      def set_league
+        @league = League.find_by(name: params[:associated_league])
+        render json: { error: 'League not found' }, status: :not_found unless @league
+      end
+
+      def tournament_params
+        params.require(:tournament).permit(:name, :date, :place, :time, :num_rounds, :holes, :cost, :package,
+                                           :additional_information, :formula, :hcp, :min_players, :max_players,
+                                           :gen_classification, :image_url)
+      end
 
       def create_rewards(tournament, rewards)
         rewards.each do |reward|
@@ -199,19 +117,32 @@ module Api
         end
       end
 
-      def integer_param(value, errors, field_name)
-        Integer(value)
-      rescue ArgumentError
-        errors << "#{field_name} must be a valid integer"
-        nil
-      end
+      # def handle_rewards_and_sponsors(tournament, params, update: false)
+      #   create_or_update_rewards(tournament, params[:rewards], update)
+      #   create_or_update_sponsors(tournament, params[:sponsors], update)
+      # end
 
-      def float_param(value, errors, field_name)
-        Float(value)
-      rescue ArgumentError
-        errors << "#{field_name} must be a valid float"
-        nil
-      end
+      # def create_or_update_rewards(tournament, rewards, update)
+      #   rewards&.each do |reward|
+      #     if update
+      #       r = tournament.tournament_rewards.find_or_initialize_by(condition: reward[:condition])
+      #       r.update(reward.slice(:sponsor, :prize))
+      #     else
+      #       tournament.tournament_rewards.create(reward.permit(:condition, :sponsor, :prize))
+      #     end
+      #   end
+      # end
+
+      # def create_or_update_sponsors(tournament, sponsors, update)
+      #   sponsors&.each do |sponsor|
+      #     if update
+      #       s = tournament.tournament_sponsors.find_or_initialize_by(name: sponsor[:name])
+      #       s.update(sponsor.slice(:image_url, :description))
+      #     else
+      #       tournament.tournament_sponsors.create(sponsor.permit(:name, :image_url, :description))
+      #     end
+      #   end
+      # end
     end
   end
 end

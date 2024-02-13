@@ -7,13 +7,13 @@ RSpec.describe Lesson do
 
   describe 'associations' do
     it { is_expected.to belong_to(:academy) }
-    it { is_expected.to have_and_belong_to_many(:users) }
     it { is_expected.to have_many(:lesson_rewards).dependent(:destroy) }
   end
 
   describe 'validations' do
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_presence_of(:date) }
+    it { is_expected.to validate_presence_of(:time) }
     it { is_expected.to validate_presence_of(:place) }
 
     it { is_expected.to validate_length_of(:name).is_at_most(100) }
