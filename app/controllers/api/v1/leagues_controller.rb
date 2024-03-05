@@ -53,23 +53,29 @@ module Api
       end
 
       def create_or_update_rewards(league, rewards, update)
-        rewards&.each do |reward|
-          if update
-            r = league.league_rewards.find_or_initialize_by(condition: reward[:condition])
-            r.update(reward.slice(:sponsor, :prize))
-          else
+        if update
+          league.league_rewards.destroy_all
+
+          rewards&.each do |reward|
+            league.league_rewards.create(reward.permit(:condition, :sponsor, :prize))
+          end
+        else
+          rewards&.each do |reward|
             league.league_rewards.create(reward.permit(:condition, :sponsor, :prize))
           end
         end
       end
 
       def create_or_update_sponsors(league, sponsors, update)
-        sponsors&.each do |sponsor|
-          if update
-            s = league.league_sponsors.find_or_initialize_by(name: sponsor[:name])
-            s.update(sponsor.slice(:image_url, :description))
-          else
-            league.league_sponsors.create(sponsor.permit(:name, :image_url, :description))
+        if update
+          league.league_sponsors.destroy_all
+
+          sponsors&.each do |sponsors|
+            league.league_sponsors.create(sponsors.permit(:name, :image, :description))
+          end
+        else
+          sponsors&.each do |sponsors|
+            league.league_sponsors.create(sponsors.permit(:name, :image, :description))
           end
         end
       end

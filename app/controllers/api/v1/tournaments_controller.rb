@@ -57,23 +57,29 @@ module Api
       end
 
       def create_or_update_rewards(tournament, rewards, update)
-        rewards&.each do |reward|
-          if update
-            r = tournament.tournament_rewards.find_or_initialize_by(condition: reward[:condition])
-            r.update(reward.slice(:sponsor, :prize))
-          else
+        if update
+          tournament.tournament_rewards.destroy_all
+
+          rewards&.each do |reward|
+            tournament.tournament_rewards.create(reward.permit(:condition, :sponsor, :prize))
+          end
+        else
+          rewards&.each do |reward|
             tournament.tournament_rewards.create(reward.permit(:condition, :sponsor, :prize))
           end
         end
       end
 
       def create_or_update_sponsors(tournament, sponsors, update)
-        sponsors&.each do |sponsor|
-          if update
-            s = tournament.tournament_sponsors.find_or_initialize_by(name: sponsor[:name])
-            s.update(sponsor.slice(:image_url, :description))
-          else
-            tournament.tournament_sponsors.create(sponsor.permit(:name, :image_url, :description))
+        if update
+          tournament.tournament_sponsors.destroy_all
+
+          sponsors&.each do |sponsors|
+            tournament.tournament_sponsors.create(sponsors.permit(:name, :image, :description))
+          end
+        else
+          sponsors&.each do |sponsors|
+            tournament.tournament_sponsors.create(sponsors.permit(:name, :image, :description))
           end
         end
       end

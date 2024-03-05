@@ -44,14 +44,15 @@ module Api
       end
 
       def create_or_update_sponsors(academy, sponsors, update)
-        sponsors&.each do |sponsor|
-          filtered_params = sponsor.permit(:name, :image_url, :description)
+        if update
+          academy.academy_sponsors.destroy_all
 
-          if update
-            s = academy.academy_sponsors.find_or_initialize_by(name: filtered_params[:name])
-            s.update(filtered_params)
-          else
-            academy.academy_sponsors.create(filtered_params)
+          sponsors&.each do |sponsors|
+            academy.academy_sponsors.create(sponsors.permit(:name, :image, :description))
+          end
+        else
+          sponsors&.each do |sponsors|
+            academy.academy_sponsors.create(sponsors.permit(:name, :image, :description))
           end
         end
       end
