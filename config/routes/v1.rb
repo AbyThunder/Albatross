@@ -9,19 +9,17 @@ module Routes
           resources :users, only: :show
 
           post 'register_user', to: 'users#register_user'
-          post 'academy/create', to: 'academies#create'
+          # post 'academy/create', to: 'academies#create'
           post 'tournament/create', to: 'tournaments#create'
           post 'lesson/create', to: 'lessons#create'
           post 'league/create', to: 'leagues#create'
-          post 'academy/update', to: 'academys#update'
+          # patch 'academy/update', to: 'academies#update'
           resources :clubs, only: [:index]
-          resources :academies, only: [:index, :show] do
+          resources :academies, only: [:index, :show, :create, :update] do
             resources :lessons, only: [:create]
-            resources :sponsors, only: [:create]
+            resources :academy_sponsors, only: [:create, :update]
           end
-          resources :lessons, only: [:index, :show] do
-            resources :trainers, only: [:index, :create]
-          end
+          resources :lessons, only: [:index, :show]
           resources :tournaments, only: [:index, :show, :update]
           resources :leagues, only: [:index, :show] do
             collection do
