@@ -12,6 +12,7 @@ class AcademySerializer < ActiveModel::Serializer
   attribute :contact, if: :is_edit?
 
   has_many :academy_sponsors, if: :is_edit?
+  has_many :lessons
 
   def is_index?
     instance_options[:is_index]
