@@ -16,10 +16,10 @@ module Routes
           # patch 'academy/update', to: 'academies#update'
           resources :clubs, only: [:index]
           resources :academies, only: [:index, :show, :create, :update] do
-            resources :lessons, only: [:create]
+            resources :lessons, only: [:create, :update]
             resources :academy_sponsors, only: [:create, :update]
           end
-          resources :lessons, only: [:index, :show]
+          resources :lessons, only: [:index, :show, :create, :update]
           resources :tournaments, only: [:index, :show, :update]
           resources :leagues, only: [:index, :show] do
             collection do
