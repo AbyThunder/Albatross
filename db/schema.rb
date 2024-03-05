@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_13_212939) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_05_154729) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -143,6 +143,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_13_212939) do
     t.datetime "updated_at", null: false
     t.string "name"
     t.string "time"
+    t.string "status", default: "upcoming", null: false
     t.index ["academy_id"], name: "index_lessons_on_academy_id"
   end
 

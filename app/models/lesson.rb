@@ -4,6 +4,8 @@ class Lesson < ApplicationRecord
   belongs_to :academy
   has_many :lesson_rewards, dependent: :destroy
 
+  enum status: { upcoming: 'upcoming', ongoing: 'ongoing', completed: 'completed' }
+
   validates :name, presence: true, length: { maximum: 100 }
   validates :date, presence: true
   validates :time, presence: true
