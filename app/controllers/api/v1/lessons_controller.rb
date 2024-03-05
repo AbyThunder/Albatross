@@ -29,6 +29,17 @@ module Api
         end
       end
 
+      def update
+        lesson = Lesson.find(params[:id])
+
+        if lesson.update(permitted_params)
+          create_or_update_rewards(lesson, params, update: true)
+          render json: { message: 'Lesson updated successfully' }, status: :ok
+        else
+          render json: { errors: lesson.errors.full_messages }, status: :unprocessable_entity
+        end
+      end
+
       private
 
       def permitted_params
