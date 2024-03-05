@@ -46,20 +46,16 @@ module Api
         params.permit(:name, :description, :date, :place, :freebie, :academy_id, :time)
       end
 
-      def reward_params
-        params.permit(:condition, :sponsor, :prize)
-      end
-
       def create_or_update_rewards(lesson, rewards, update)
         if update
           lesson.lesson_rewards.destroy_all
 
           rewards&.each do |reward|
-            lesson.lesson_rewards.create(reward_params)
+            lesson.lesson_rewards.create(reward.permit(:condition, :sponsor, :prize))
           end
         else
           rewards&.each do |reward|
-            lesson.lesson_rewards.create(reward_params)
+            lesson.lesson_rewards.create(reward.permit(:condition, :sponsor, :prize))
           end
         end
       end
