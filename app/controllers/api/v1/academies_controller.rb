@@ -40,7 +40,7 @@ module Api
       private
 
       def permitted_params
-        params.permit(:name, :season, :edition_number, :package, :description, :contact,) # :image
+        params.permit(:name, :season, :edition_number, :package, :description, :contact) # :image
       end
 
       def create_or_update_sponsors(academy, sponsors, update)

@@ -19,43 +19,30 @@ module Api
       end
 
       def create
-        lesson_params = JSON.parse(request.body.read)
-
-        # unused assignments
-        # academy_name = lesson_params['Associated Academy']
-        # academy = Academy.find_by(name: academy_name)
-
-        frontend_params = {
-          name: lesson_params['Name'],
-          description: lesson_params['Activity List'],
-          date: lesson_params['Date'],
-          place: lesson_params['Location'],
-          freebie: lesson_params['Gratis Items'],
-          academy_id: 1 # academy.id hardcoded :'(
-        }
-
-        lesson = Lesson.new(frontend_params)
+        lesson = Lesson.new(permitted_params)
 
         if lesson.save
-          create_rewards(lesson, lesson_params['Rewards'])
-
-          render json: { message: 'League registered successfully' }, status: :created
+          create_or_update_rewards(lesson, params[:rewards], false)
+          render json: { message: 'Lesson registered successfully' }, status: :created
         else
-          Rails.logger.debug(lesson.errors.full_messages.to_sentence)
-          render json: { errors: lesson.errors }, status: :unprocessable_entity
+          render json: { errors: lesson.errors.full_messages }, status: :unprocessable_entity
         end
       end
 
       private
 
-      def create_rewards(lesson, rewards)
-        rewards.each do |reward|
-          LessonReward.create(
-            condition: reward['Condition'],
-            sponsor: reward['Sponsor'],
-            prize: reward['Reward'],
-            lesson_id: lesson.id
-          )
+      def permitted_params
+        params.permit(:name, :description, :date, :place, :freebie, :academy_id, :time)
+      end
+
+      def create_or_update_rewards(lesson, rewards, update)
+        rewards&.each do |reward|
+          if update
+            r = lesson.lesson_rewards.find_or_initialize_by(condition: reward[:condition])
+            r.update(reward.slice(:sponsor, :prize))
+          else
+            lesson.lesson_rewards.create(reward.permit(:condition, :sponsor, :prize))
+          end
         end
       end
     end
