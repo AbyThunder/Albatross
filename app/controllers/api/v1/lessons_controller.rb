@@ -51,11 +51,14 @@ module Api
       end
 
       def create_or_update_rewards(lesson, rewards, update)
-        rewards&.each do |reward|
-          if update
-            lesson.lesson_rewards.destroy_all
+        if update
+          lesson.lesson_rewards.destroy_all
+
+          rewards&.each do |reward|
             lesson.lesson_rewards.create(reward_params)
-          else
+          end
+        else
+          rewards&.each do |reward|
             lesson.lesson_rewards.create(reward_params)
           end
         end
