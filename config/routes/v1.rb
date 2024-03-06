@@ -9,11 +9,11 @@ module Routes
           resources :users, only: :show
 
           post 'register_user', to: 'users#register_user'
-          # post 'academy/create', to: 'academies#create'
+          post 'academy/create', to: 'academies#create'
           post 'tournament/create', to: 'tournaments#create'
           post 'lesson/create', to: 'lessons#create'
           post 'league/create', to: 'leagues#create'
-          # patch 'academy/update', to: 'academies#update'
+          patch 'academy/update', to: 'academies#update'
           resources :clubs, only: [:index]
           resources :academies, only: [:index, :show, :create, :update] do
             resources :lessons, only: [:create, :update]
